@@ -1,6 +1,7 @@
 package inout;
 import java.util.Scanner;
-import myutilities.Validator;
+
+import validatorutil.Validator;
 
 public class Reader
 {
@@ -217,3 +218,4 @@ public static String[] getElementsInRange(String[] srcArray,int start,int end)th
  }
 
  }//end of class
+

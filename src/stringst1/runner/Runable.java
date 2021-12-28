@@ -1,13 +1,49 @@
 package runner;
 import mystrings.StringTask;
 import inout.Reader;
+import userexception.CustomException;
 
 public class Runable
 {
  
+ //declaration of repeated variables
+  String message,string,string2,value;
+  char character;
+  int option,num,length;
+  boolean result;
+  
+ private void caseOne(Reader read,String inpStr)
+ {
+ 	try{ 
+	    length=fetch.getStringLength(string);
+	    message=String.format("Length of string \" %s \" is %s",string,length);
+	   }
+	catch(CustomException exception){
+    		message=exception.getMessage();
+	   }
+	   read.print(message);
+ }
+ 
+ private void caseTwo(Reader read)
+ {
+ 	string=read.getString("Enter a string to convert to character array:");
+	try{
+	    	char[] charArray=fetch.toCharArray(string);
+
+	   	 read.print("Character Array:");
+		 System.out.println();
+		 System.out.println(charArray);
+	 }
+       catch(CustomException exception){
+	      	read.print(exception.getMessage());
+   	}
+	
+ }
+ 
  //main() method
  public static void main(String[] args)
  {
+
   //declaration of repeated variables
   String message,string,string2,value;
   char character;
@@ -30,35 +66,17 @@ public class Runable
   {
    	if(args.length>0)
    	{
-    	try{ 
-	    string=args[0];
-	    length=fetch.getStringLength(string);
-	    message=String.format("Length of string \" %s \" is %s",string,length);
-	   }
-	catch(Exception exception){
-    		message=exception.getMessage();
-	   }
+   		run.caseOne(read,args[0]);
    	}
    	else
    	{
-    		message="No arguments passed, cannot find the length!";
+    		read.print("No arguments passed, cannot find the length!");
    	}
-   	read.print(message);
    	break;
   }
   case 2:
   {
-	string=read.getString("Enter a string to convert to character array:");
-	try{
-	    	char[] charArray=fetch.toCharArray(string);
-
-	   	 read.print("Character Array:");
-		 System.out.println();
-		 System.out.println(charArray);
-	 }
-     catch(Exception exception){
-	      	read.print(exception.getMessage());
-   	}
+  	run.caseTwo();
 	break;
   }
   case 3:
@@ -77,7 +95,7 @@ public class Runable
 		      message="String entered is less than number of characters to return!";
 	     }
 	     }
-	   catch(Exception exception){
+	   catch(CustomException exception){
     		message=exception.getMessage();
 	   }
 	   read.print(message);
@@ -91,7 +109,7 @@ public class Runable
 		num=fetch.charOccurCount(string,character);
 		message=String.format("The occurence of '%c' in \"%s\" is %d",character,string,num);
 	   }
-	catch(Exception exception){
+	catch(CustomException exception){
     		message=exception.getMessage();
 	   }
 	   read.print(message);
@@ -105,7 +123,7 @@ public class Runable
 		   num=fetch.charLastIndex(string,character);
 		   message=String.format("The last index of '%c' in \"%s\" is %d",character,string,num);
 		}
-	     catch(Exception exception){
+	     catch(CustomException exception){
 		    message=exception.getMessage();
 	   }
 	   read.print(message);
@@ -127,7 +145,7 @@ public class Runable
 		    message="String entered is less than number of characters to return!";
 		   }
 	   }
-	   catch(Exception exception){
+	   catch(CustomException exception){
 	    message=exception.getMessage();
    	}
 	read.print(message);
@@ -149,7 +167,7 @@ public class Runable
 		    message="String entered is less than number of characters to return!";
 	   }
 	   }
-	catch(Exception exception){
+	catch(CustomException exception){
 	    message=exception.getMessage();
 	}
 	read.print(message);
@@ -172,7 +190,7 @@ public class Runable
 		    message="String entered is less than number of characters to return!";
 		    }
 	   }
-	   catch(Exception exception){
+	   catch(CustomException exception){
 		    message=exception.getMessage();
 	   }
 	   read.print(message);
@@ -186,7 +204,7 @@ public class Runable
 		   result=fetch.checkStartsWith(string,string2);
 		   message=String.format("The string \"%s\" startswith \"%s\" is %b",string,string2,result);
 		   }
-	  catch(Exception exception){
+	  catch(CustomException exception){
 		    message=exception.getMessage();
    	}
    	read.print(message);
@@ -200,7 +218,7 @@ public class Runable
    		result=fetch.checkEndsWith(string,string2);
    		message=String.format("The string \"%s\" endswith \"%s\" is 				%b",string,string2,result);
 	   }
-	catch(Exception exception){
+	catch(CustomException exception){
     		message=exception.getMessage();
 	   }
 	   read.print(message);
@@ -213,7 +231,7 @@ public class Runable
 	value=fetch.toUpper(string);
 	   message=String.format("The UPPERCASE of string \"%s\" is %s",string,value);
 	}
-   	catch(Exception exception){
+   	catch(CustomException exception){
 	    message=exception.getMessage();
 	}
 	read.print(message);
@@ -226,7 +244,7 @@ public class Runable
 		   value=fetch.toLower(string);
 		   message=String.format("The lowercase of string \"%s\" is %s",string,value);
 		}
-	   catch(Exception exception){
+	   catch(CustomException exception){
 		    message=exception.getMessage();
 	   }
 	   read.print(message);
@@ -239,7 +257,7 @@ public class Runable
 		   value=fetch.strReverse(string);
 		   message=String.format("The reverse of string \"%s\" is %s",string,value);
 	   }
-	    catch(Exception exception){
+	    catch(CustomException exception){
 		    message=exception.getMessage();
    	  }
 	   read.print(message);
@@ -258,7 +276,7 @@ public class Runable
 		   value=fetch.removeWhiteSpace(string);
 		   message=String.format("The concatenated string \"%s\" without whitespace is %s",string,value);
 	   }
-	   catch(Exception exception){
+	   catch(CustomException exception){
 		    message=exception.getMessage();
 	   }
 	   read.print(message);
@@ -276,7 +294,7 @@ public class Runable
 	   }
 	   System.out.println();
 	   }
-	 catch(Exception exception){
+	 catch(CustomException exception){
 	 	read.print(exception.getMessage());
 	   }
 	   break;
@@ -292,7 +310,7 @@ public class Runable
    
 		   message=String.format("The joined string \"%s\"",value);
 	   }
-	   catch(Exception exception){
+	   catch(CustomException exception){
 		    message=exception.getMessage();
 	   }
 	   read.print(message);
@@ -306,7 +324,7 @@ public class Runable
 		   result=fetch.equalsCase(string,string2);
 		   message=String.format("The string \"%s\" case sensitive equals \"%s\" : %b ",string,string2,result);
 		}
-	   catch(Exception exception){
+	   catch(CustomException exception){
 		    message=exception.getMessage();
 	   }
 	   read.print(message);
@@ -320,7 +338,7 @@ public class Runable
 		   result=fetch.equalsNonCase(string,string2);
 		   message=String.format("The string \"%s\" case sensitive equals \"%s\" : %b ",string,string2,result);
 	   }
-	   catch(Exception exception){
+	   catch(CustomException exception){
 		    message=exception.getMessage();
 	   }
 	   read.print(message);
@@ -333,7 +351,7 @@ public class Runable
 		   value=fetch.trimSpaces(string);
 		   message=String.format("The trimmed string \"%s\" is \"%s\"",string,value);
 		}
-	   catch(Exception exception){
+	   catch(CustomException exception){
 	    message=exception.getMessage();
 	   }
 	   read.print(message);

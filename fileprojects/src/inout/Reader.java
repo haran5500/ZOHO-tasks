@@ -1,6 +1,7 @@
 package inout;
 import java.util.Scanner;
-import myutilities.Validator;
+
+import validator.util.Validator;
 
 public class Reader
 {
