@@ -1,19 +1,16 @@
 package pojoinvoke;
 
 import inout.Reader;
+import pojo.pack.StudentPojo;
 
-public class RunPojo extends StudentPojo {
+public class RunPojo {
 
-	public RunPojo(String name,int age)
-	{
-		super(name,age);
-	}
 	public static void main(String[] args) {
-		Reader read=new Reader();
-		String name=read.getString("Enter name:");
-		int age=read.getInt("Enter age:");
 		
-		RunPojo run=new RunPojo(name,age);
+		String name=Reader.getString("Enter name:");
+		int age=Reader.getInt("Enter age:");
+		
+		StudentPojo run=new StudentPojo(name,age);
 		
 		System.out.println(run);
 	}

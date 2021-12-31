@@ -1,9 +1,10 @@
 package mybuilder;
-import mystrings.StringTask;
+import validatorutil.Validator;
+import userexception.CustomException;
 
 public class Builders
 {
- StringTask support=new StringTask();
+ Validator support=new Validator();
  
 //String Builder reference creation without parameter
  public StringBuilder createBuilder()
@@ -13,43 +14,43 @@ public class Builders
  }
  
  //String Builder reference creation with String parameter
- public StringBuilder createBuilder(String inpString)throws Exception
+ public StringBuilder createBuilder(String inpString)throws CustomException
  {
- 	  support.validateString(inpString);
+ 	  Validator.validateString(inpString);
 	  StringBuilder builderObj=new StringBuilder(inpString);
 	  return builderObj;
  }
  
  //Builder Validator for string empty
- public void builderValidator(StringBuilder inpStr)throws Exception
+ public void builderValidator(StringBuilder inpStr)throws CustomException
  {
 	  if(inpStr==null)
 	  {
-		   throw new Exception("StringBuilder cannot be null!");
+		   throw new CustomException("StringBuilder cannot be null!");
 	  }
  }
 
  //method to check the String in String Builder
- public void stringValidator(StringBuilder inpStr)throws Exception
+ public void stringValidator(StringBuilder inpStr)throws CustomException
  {
  	int length=getBuilderLength(inpStr);
  	if(length<0)
  	{
- 		throw new Exception("Builder string cannot be empty! ");
+ 		throw new CustomException("Builder string cannot be empty! ");
  	}
  }
   
  //method to append string to a StringBuilder
- public StringBuilder appendBuilder(StringBuilder builderStr,String inpStr)throws Exception
+ public StringBuilder appendBuilder(StringBuilder builderStr,String inpStr)throws CustomException
  {
  	stringValidator(builderStr);
- 	support.validateString(inpStr);
+ 	Validator.validateString(inpStr);
  	builderStr.append(inpStr);
  	return builderStr;
  }
  
   //method to append string to a StringBuilder
- public StringBuilder appendBuilder(StringBuilder builderStr,char inpChar)throws Exception
+ public StringBuilder appendBuilder(StringBuilder builderStr,char inpChar)throws CustomException
  {
  	stringValidator(builderStr);
  	builderStr.append(inpChar);
@@ -57,17 +58,17 @@ public class Builders
  }
  
  //#1 method to get the String length in a StringBuilder
- public int getBuilderLength(StringBuilder builderStr)throws Exception
+ public int getBuilderLength(StringBuilder builderStr)throws CustomException
  {
 	  builderValidator(builderStr);
 	  return builderStr.length();
  }
  
  //#2 method to append spaces between strings
- public StringBuilder appendStringsWithChar(StringBuilder builderStr,String inpStr,char joinChar)throws Exception
+ public StringBuilder appendStringsWithChar(StringBuilder builderStr,String inpStr,char joinChar)throws CustomException
  {
  	builderValidator(builderStr);
- 	support.validateString(inpStr);
+ 	Validator.validateString(inpStr);
 	stringValidator(builderStr);
  	appendBuilder(builderStr,inpStr);
  	builderStr=replaceSpace(builderStr,joinChar);
@@ -75,7 +76,7 @@ public class Builders
  }
  
  //#5 method to replace Space and insert a string in the index
- public StringBuilder replaceSpace(StringBuilder builderStr,char joinChar)throws Exception
+ public StringBuilder replaceSpace(StringBuilder builderStr,char joinChar)throws CustomException
  {
  	builderValidator(builderStr);
 
@@ -91,28 +92,28 @@ public class Builders
  }
 
 //# 9 method to get indexOf a character
-public int indexOfChar(StringBuilder builderStr,String findStr) throws Exception
+public int indexOfChar(StringBuilder builderStr,String findStr) throws CustomException
 {
 	builderValidator(builderStr);
-	support.validateString(findStr);
+	Validator.validateString(findStr);
 	return builderStr.indexOf(findStr);
 }
 
 //# 10 method to get last indexOf a character
-public int lastIndexOfChar(StringBuilder builderStr,String findStr) throws Exception
+public int lastIndexOfChar(StringBuilder builderStr,String findStr) throws CustomException
 {
 	builderValidator(builderStr);
-	support.validateString(findStr);
+	Validator.validateString(findStr);
 	return builderStr.lastIndexOf(findStr);
 }
 
 //#3 method to place a string between strings in a String Builder
-public StringBuilder insertString(StringBuilder builderStr,String inpStr)throws Exception
+public StringBuilder insertString(StringBuilder builderStr,String inpStr)throws CustomException
 {
 	builderValidator(builderStr);
-	support.validateString(inpStr);
+	Validator.validateString(inpStr);
 	
-	int strLen=support.getStringLength(inpStr);
+	int strLen=Validator.getStringLength(inpStr);
 	
 	int index=indexOfChar(builderStr," ");
 	
@@ -126,7 +127,7 @@ public StringBuilder insertString(StringBuilder builderStr,String inpStr)throws 
 }
 
 //#4 method to delete first string in a String Builder
-public StringBuilder deleteFirstString(StringBuilder builderStr)throws Exception
+public StringBuilder deleteFirstString(StringBuilder builderStr)throws CustomException
 {
 	builderValidator(builderStr);
 	int index=indexOfChar(builderStr," ");
@@ -135,7 +136,7 @@ public StringBuilder deleteFirstString(StringBuilder builderStr)throws Exception
 }
 
 //#6 method to reverse a String Builder
-public StringBuilder reverseBuilder(StringBuilder builderStr)throws Exception
+public StringBuilder reverseBuilder(StringBuilder builderStr)throws CustomException
 {
 	builderValidator(builderStr);
 	builderStr.reverse();
@@ -143,41 +144,41 @@ public StringBuilder reverseBuilder(StringBuilder builderStr)throws Exception
 }
 
 //#7 method to remove few characters between a String builder
-public StringBuilder removeChars(StringBuilder inpStr,int start,int end)throws Exception
+public StringBuilder removeChars(StringBuilder inpStr,int start,int end)throws CustomException
 {
 	builderValidator(inpStr);
 
-	support.checkNumberNegative(start);
-	support.checkNumberNegative(end);
+	Validator.validateNumberNegative(start);
+	Validator.validateNumberNegative(end);
 	
 	int length=getBuilderLength(inpStr);
-	support.lengthCheck(length,start);
-	support.lengthCheck(length,end);
+	Validator.validateLength(length,start);
+	Validator.validateLength(length,end);
 	
 	if(end<start)
 	{
-		throw new Exception("Starting index is greater than Ending index!");
+		throw new CustomException("Starting index is greater than Ending index!");
 	}
 	inpStr.delete(start,end);
 	return inpStr;
 }
 
 //#8 method to replace few chars
-public StringBuilder replaceChars(StringBuilder inpStr,String replaceString,int start,int end)throws Exception
+public StringBuilder replaceChars(StringBuilder inpStr,String replaceString,int start,int end)throws CustomException
 {
 	builderValidator(inpStr);
- 	support.validateString(replaceString);
+ 	Validator.validateString(replaceString);
 
-	support.checkNumberNegative(start);
-	support.checkNumberNegative(end);
+	Validator.validateNumberNegative(start);
+	Validator.validateNumberNegative(end);
 	
 	int length=getBuilderLength(inpStr);
-	support.lengthCheck(length,start);
-	support.lengthCheck(length,end);
+	Validator.validateLength(length,start);
+	Validator.validateLength(length,end);
 	
 	if(end<start)
 	{
-		throw new Exception("Starting index is greater than Ending index!");
+		throw new CustomException("Starting index is greater than Ending index!");
 	}
 	inpStr.replace(start,end,replaceString);
 	return inpStr;
