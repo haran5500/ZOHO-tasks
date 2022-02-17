@@ -1,2 +1,0 @@
-#CustomerData#{"1003":"{\"gender\":\"Male\",\"city\":\"Chennai\",\"name\":\"Ranveer\",\"id\":1003,\"mobileNo\":9547521031}","1002":"{\"gender\":\"Male\",\"city\":\"Trichy\",\"name\":\"Jack\",\"id\":1002,\"mobileNo\":9940784512}","1001":"{\"gender\":\"Female\",\"city\":\"Trichy\",\"name\":\"Rose\",\"id\":1001,\"mobileNo\":9945024832}"}
-#CustomerID#{"CustomerID":"1003"}
