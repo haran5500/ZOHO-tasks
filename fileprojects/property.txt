@@ -1,4 +1,0 @@
-#Properies file data!
-#Mon Dec 27 14:50:54 IST 2021
-1=hello
-2=hi
