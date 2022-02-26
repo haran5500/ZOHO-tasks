@@ -1,0 +1,48 @@
+	function showAccounts() {
+
+		/* var det = document.getElementById("profile");
+		if (det.style.display === "block") {
+
+			det.style.display = "none";
+
+		} */
+
+		var div = document.getElementById("accounts");
+
+		if (div.style.display === "none") {
+
+			div.style.display = "block";
+
+		} else {
+			div.style.display = "none";
+		}
+
+		/* 	document.getElementById("myDIV").style.display = "none"; */
+		/* document.getElementbyId("profile").style.diplay = "block"; */
+
+	}
+	
+	function showProfile() {
+
+		/* var det = document.getElementById("accounts");
+		if (det.style.display === "block") {
+
+			det.style.display = "none";
+
+		} */
+
+		var div = document.getElementById("profile");
+
+		if (div.style.display === "none") {
+
+			div.style.display = "block";
+
+		} else {
+			div.style.display = "none";
+		}
+
+		/* 	document.getElementById("myDIV").style.display = "none"; */
+		/* document.getElementbyId("profile").style.diplay = "block"; */
+
+	}
+	
