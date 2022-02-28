@@ -73,75 +73,9 @@
 	box-shadow: 0px 5px 5px 0px #ffa260;
 	cursor: grab;
 }
-
-
 </style>
 
 <script type="text/javascript">
-	function customerView() {
-
-		var custbtn = document.getElementById("custbtn");
-		var accbtn = document.getElementById("accbtn");
-
-		var custview = document.getElementById("customerdetails");
-		var accview = document.getElementById("accdetails");
-
-		if (document.body.contains(custview)) {
-
-			if (custbtn.style.display === "inline-block") {
-				custbtn.style.display = "none";
-			}
-
-			if (accbtn.style.display = "none") {
-				accbtn.style.display = "inline-block";
-			}
-
-			if (custview.style.display === "none") {
-				custview.style.display = "block";
-			}
-
-			if (accview.style.display === "block") {
-				accview.style.display = "none";
-			}
-		} else {
-			document.forms[0].action = "AdminDashBoard.jsp";
-			document.forms[0].method = "post"; // "get"
-			document.forms[0].submit();
-		}
-	}
-
-	function accountView() {
-
-		var custbtn = document.getElementById("custbtn");
-		var accbtn = document.getElementById("accbtn");
-
-		var custview = document.getElementById("customerdetails");
-		var accview = document.getElementById("accdetails");
-
-		if (document.body.contains(accview)) {
-
-			if (accbtn.style.display === "inline-block") {
-				accbtn.style.display = "none";
-			}
-
-			if (custbtn.style.display === "none") {
-				custbtn.style.display = "inline-block";
-			}
-
-			if (accview.style.display === "none") {
-				accview.style.display = "block";
-			}
-
-			if (custview.style.display === "block") {
-				custview.style.display = "none";
-			}
-		} else {
-			document.forms[0].action = "AdminDashBoard.jsp";
-			document.forms[0].method = "post"; // "get"
-			document.forms[0].submit();
-		}
-	}
-
 	function showProfile() {
 
 		var div = document.getElementById("profile");
@@ -153,13 +87,27 @@
 
 				div.style.display = "block";
 
-			} else {
-				div.style.display = "none";
 			}
+			// 			else {
+			// 				div.style.display = "none";
+			// 				det.style.display = "block";
+			// 			}
 		} else {
 			document.forms[0].action = "UserDashBoard.jsp";
 			document.forms[0].method = "post"; // "get"
 			document.forms[0].submit();
+
+		}
+	}
+
+	function closeProfile() {
+		var div = document.getElementById("profile");
+		div.style.display = "none";
+
+		var accdiv = document.getElementById("accounts");
+
+		if (div.style.display === "block") {
+			div.style.display = "none";
 		}
 	}
 </script>
@@ -178,36 +126,35 @@
 			<h2>DashBoard</h2>
 		</div>
 		<div id="div2">
-			<input type="button" name="Customers" value="View Customers"
-				id="custbtn" onclick="customerView();"
-				style="display: inline-block;" class="menubutton"> <input
-				type="button" name="Accounts" value="View Accounts" id="accbtn"
-				onclick="accountView();" style="display: inline-block;"
-				class="menubutton"> <a href="WithdrawAmount.jsp"
-				class="anchor">Withdraw Amount </a> <a href="DepositAmount.jsp"
-				class="anchor">Deposit Amount</a> <a href="TransferAmount.jsp"
-				class="anchor">Transfer to Account </a> <input type="button"
-				name="Logout" value="Logout" class="menubutton">
+			<a href="CustomerList.jsp" class="anchor">CustomerList </a> <a
+				href="AdminDashBoard.jsp" class="anchor">Account List </a> <a
+				href="WithdrawAmount.jsp" class="anchor">Withdraw Amount </a> <a
+				href="DepositAmount.jsp" class="anchor">Deposit Amount</a> <a
+				href="TransferAmount.jsp" class="anchor">Transfer to Account </a> <input
+				type="button" name="Logout" value="Logout" class="menubutton">
 		</div>
 		<%
 		} else {
-			String userName=(String) session.getAttribute("Name");
-					
+		String userName = (String) request.getParameter("UserName");
 		%>
 		<div id="div1">
-			<h1><% out.print(userName); %></h1>
+			<h1>
+				<%
+				out.print(userName);
+				%>
+			</h1>
 			<h2>DashBoard</h2>
 		</div>
 		<div id="div2">
 
-		<input type="button" name="Show Profile" value="Profile"
-			onclick="showProfile();" class="menubutton"> <a
-			href="TransferAmount.jsp" class="anchor">Transfer to Account </a> <input
-			type="button" name="Logout" value="Logout" class="menubutton">
-			</div>
-	<%
-	}
-	%>
+			<input type="button" name="Show Profile" value="Profile"
+				onclick="showProfile();" class="menubutton"> <a
+				href="TransferAmount.jsp" class="anchor">Transfer to Account </a> <input
+				type="button" name="Logout" value="Logout" class="menubutton">
+		</div>
+		<%
+		}
+		%>
 
 
 

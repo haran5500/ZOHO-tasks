@@ -59,7 +59,6 @@ public class BankingLogic {
 
 	private void loadData() throws CustomException {
 		Map<Long, CustomerData> customerMap = connector.getAllCustomers();
-
 		Map<Long, Map<Long, AccountData>> accountMap = connector.getAllCustomerAccounts();
 
 		cache.setData(customerMap, accountMap);
@@ -70,7 +69,7 @@ public class BankingLogic {
 		try {
 			return connector.validateLogin(userID, password);
 		} catch (CustomException ex) {
-			System.out.println("printing:" + ex.getMessage());
+
 			throw new CustomException(ex);
 		}
 	}

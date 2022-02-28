@@ -1,5 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+
+<%@ page import="banking.BankingLogic"%>
+
+<%@ page import="customer.CustomerData"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -111,15 +115,17 @@ function isNumberKey(evt)
 
 	<jsp:include page="MenuBar.jsp" />
 
-
 	<div class="div">
-		<form action="" id="customerform">
+		<form action="addCustomer" method="post" id="customerform">
+
 			<fieldset>
 
 				<legend>
 					<img alt="" src="add-user.png">
 				</legend>
-
+				<%
+				if (request.getParameter("CustomerId") == null) {
+				%>
 				<table>
 
 					<tr>
@@ -150,8 +156,60 @@ function isNumberKey(evt)
 							placeholder="Mobile Number"></td>
 					</tr>
 					<tr>
-						<td></td>
-						<td></td>
+						<td><input type="button" name="Reset" value="Reset"
+							onclick="resetform();" class="resetbtn"></td>
+
+						<td><input type="submit" name="Add Customer"
+							value="Add Customer"></td>
+					</tr>
+				</table>
+				<%
+				} else {
+
+				long customerId = Long.valueOf(request.getParameter("CustomerId"));
+				BankingLogic logic = (BankingLogic) request.getServletContext().getAttribute("logicApi");
+				CustomerData customer = logic.getCustomerDetailsByID(customerId);
+				%>
+
+				<table>
+
+					<tr>
+						<td colspan="2" style="text-align: center;"><h1>Add
+								Customer</h1></td>
+					</tr>
+					<tr>
+						<td><label class="required">Customer ID</label></td>
+						<td><input type="text" name="CustomerID"
+							placeholder="Customer ID" disabled="disabled"
+							value="<%=customer.getId()%>" required></td>
+					</tr>
+					</tr>
+					<tr>
+						<td><label class="required">Customer Name</label></td>
+						<td><input type="text" name="CustomerName"
+							autofocus="autofocus" placeholder="Customer Name"
+							value="<%=customer.getName()%>" required></td>
+					</tr>
+					<tr>
+						<td><label class="required">Gender</label></td>
+						<td><input type="radio" id="Gender" name="Gender"
+							value="Male" <%if (customer.getGender().equals("Male")) {%>
+							checked <%}%> required><label for="Gender">Male</label>
+							<input type="radio" id="Gender1" name="Gender"
+							<%if (customer.getGender().equals("Female")) {%> checked <%}%>
+							value="Female" required><label for="Gender1">Female</label></td>
+					</tr>
+					<tr>
+						<td><label class="required">City</label></td>
+						<td><input type="text" name="City"
+							placeholder="Resident City" value="<%=customer.getCity()%>"
+							required></td>
+					</tr>
+					<tr>
+						<td><label class="required">Mobile Number</label></td>
+						<td><input type="text" name="MobileNo" min="10"
+							maxlength="10" required onkeypress="return isNumberKey(event);"
+							placeholder="Mobile Number" value="<%=customer.getMobileNo()%>"></td>
 					</tr>
 					<tr>
 						<td><input type="button" name="Reset" value="Reset"
@@ -161,7 +219,11 @@ function isNumberKey(evt)
 							value="Add Account"></td>
 					</tr>
 				</table>
+				<%
+				}
+				%>
 			</fieldset>
+
 		</form>
 	</div>
 </body>

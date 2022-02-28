@@ -89,6 +89,7 @@ public class CustomerDBLogic {
 
 						customer.setMobileNo(result.getLong("MobileNo"));
 
+						customer.setStatus(result.getBoolean("Status"));
 						long custID = customer.getId();
 						customerMap.put(custID, customer);
 					}

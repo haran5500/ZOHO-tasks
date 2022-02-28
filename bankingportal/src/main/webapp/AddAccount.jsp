@@ -1,5 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+
+<%@ page import="customer.CustomerData"%>
+<%@ page import="account.AccountData"%>
+<%@ page import="banking.BankingLogic"%>
+<%@ page import="branches.BankBranchDetails"%>
+<%@ page import="java.util.Map"%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,7 +19,7 @@
 }
 
 .div {
-	margin-top: 10%;
+	margin-top: 5%;
 	margin-left: 25%;
 }
 
@@ -111,7 +118,7 @@ function isNumberKey(evt)
 	<jsp:include page="MenuBar.jsp" />
 
 	<div class="div">
-		<form action="" id="accountform">
+		<form action="addAccount" method="post" id="accountform">
 			<fieldset>
 
 				<legend>
@@ -125,24 +132,66 @@ function isNumberKey(evt)
 					</tr>
 					<tr>
 						<td><label class="required">CustomerID</label></td>
-						<td><input type="text" name="CustomerID"
-							placeholder="Customer ID" onkeypress="return isNumberKey(event);"
-							autofocus="autofocus"></td>
+						<td><select autofocus="autofocus" name="CustomerID"
+							required="required">
+								<option selected disabled value="">Select Customer ID</option>
+								<%
+								BankingLogic logic = new BankingLogic();
+								Map<Long, CustomerData> customers = logic.getAllCustomerDetails();
+
+								for (long key : customers.keySet()) {
+									System.out.println("Value:" + customers.get(key).getStatus());
+									if (customers.get(key).getStatus()) {
+								%>
+								<option value="<%=key%>"><%=key%></option>
+								<%
+								}
+								}
+								%>
+						</select></td>
+						<!-- 						<td><input type="text" name="CustomerID" -->
+						<!-- 							placeholder="Customer ID" onkeypress="return isNumberKey(event);" -->
+						<!-- 							autofocus="autofocus"></td> -->
 					</tr>
 					<tr>
 						<td><label class="required">Account Type</label></td>
-						<td><input type="text" name="AccType"
-							placeholder="Account Type"></td>
+						<td><select required="required" name="AccType">
+								<option selected disabled value="">Select Account Type</option>
+								<%
+								BankBranchDetails branch = new BankBranchDetails();
+								String[] accTypes = branch.getAccountTypes();
+								for (String value : accTypes) {
+								%>
+								<option value="<%=value%>"><%=value%></option>
+								<%
+								}
+								%>
+								<!-- 						<td><input type="text" name="AccType" -->
+								<!-- 							placeholder="Account Type"></td> -->
+						</select></td>
 					</tr>
 					<tr>
 						<td><label class="required">Location</label></td>
-						<td><input type="text" name="Location" placeholder="Location"></td>
+
+						<!-- <td><input type="text" name="Location" placeholder="Location"></td> -->
+						<td><select required="required" name="Location">
+								<option selected disabled value="">Select Branch
+									Location</option>
+								<%
+								String[] locations = branch.getBranches();
+								for (String value : locations) {
+								%>
+								<option value="<%=value%>"><%=value%></option>
+								<%
+								}
+								%>
+						</select></td>
 					</tr>
 					<tr>
 						<td><label class="required">Opening Balance</label></td>
 						<td><input type="text" name="Balance"
 							placeholder="Opening Balance"
-							onkeypress="return isNumberKey(event);"></td>
+							onkeypress="return isNumberKey(event);" required="required"></td>
 					</tr>
 					<tr>
 						<td><input type="button" name="Reset" value="Reset"

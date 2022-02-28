@@ -1,0 +1,69 @@
+@charset "UTF-8";
+
+
+* {
+	font-family: Helvetica;
+	font-size: 22px;
+}
+
+/* input[type="button"] {
+	background-color: darkblue;
+	border: none;
+	height: 40px;
+	border-radius: 25px;
+	color: ghostWhite;
+} */
+
+/* input[type="button"]:hover,*/
+.button1:hover {
+	box-shadow: 0px 5px 5px 0px #ffa260;
+}
+
+.detcenter {
+	text-align: center;
+}
+
+.detright {
+	text-align: right;
+}
+
+#customerdetails, #accdetails {
+	position: relative;
+	top: 50px;
+}
+
+#customertable, #accountstable {
+	width: 70%;
+}
+
+.button, .button1 {
+	text-decoration: none;
+	width: auto;
+	height: 25px;
+	padding: 10px;
+	text-align: center;
+	font-weight: bold;
+	line-height: 25px;
+	background: darkblue;
+	/* 	border: none; */
+	/* 	height: 40px; */
+	border-radius: 25px;
+	color: ghostWhite;;
+}
+
+.button {
+	float: right;
+	display: block;
+}
+
+.button1 {
+	display: inline-block;
+}
+
+.button:hover {
+	box-shadow: 0px 5px 5px 0px lightgreen;
+}
+
+#maindiv {
+	position: relative;
+}

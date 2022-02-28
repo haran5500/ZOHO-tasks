@@ -1,16 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-
 <%@ page import="banking.BankingLogic"%>
 <%@ page import="java.util.Map"%>
-<%@ page import="account.AccountData"%>
+<%@ page import="customer.CustomerData"%>
 
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Admin DashBoard</title>
+<title>Customer List</title>
 
 <style type="text/css">
 * {
@@ -36,7 +34,7 @@
 }
 
 #customertable, #accountstable {
-	border-collapse: collapse;
+border-collapse: collapse;
 	width: 70%;
 }
 
@@ -45,13 +43,13 @@
 }
 
 #customertable tr td, #accountstable tr td {
-	border: 1px solid black;
+border:1px solid black;	
+
 }
 
-td {
-	height: 50px;
+td{
+height: 50px;
 }
-
 .button, .button1 {
 	text-decoration: none;
 	width: auto;
@@ -88,58 +86,52 @@ td {
 	text-decoration: none;
 }
 </style>
-
 </head>
-<body onload="accountView();">
-
+<body>
 
 	<jsp:include page="MenuBar.jsp" />
 
 	<div id="maindiv">
-		<div id="accdetails">
-			<table id="accountstable">
+		<div id="customerdetails">
+			<table id="customertable">
 				<tr>
-					<td colspan="7"><h1>Account Details</h1></td>
+					<td colspan="6"><h1>Customer
+							Details</h1></td>
 				</tr>
 				<tr>
-					<td colspan="7" class="detright"><a href="AddAccount.jsp"
-						class="button">Add Account</a> <!-- 				<input type="button" name="Add Account" value="Add Account"></td> -->
+					<td colspan="6" class="detright"><a href="AddCustomer.jsp"
+						class="button">Add Customer</a> <!-- 				<input type="button" name="Add Customer" value="Add Customer"></td> -->
 				</tr>
 
 				<tr style="font-weight: bold;">
-					<td><Label>Account Number</Label></td>
-					<td><Label>Customer ID</Label></td>
-					<td><Label>Account Type</Label></td>
-					<td><Label>Branch</Label></td>
-					<td><Label>IFSC Code</Label></td>
-					<td><Label>Account Balance</Label></td>
-					<td><Label>Status</Label></td>
-					<!-- 				<td><Label>Operations</Label></td> -->
+					<td><Label>CustomerID</Label></td>
+					<td><Label>Name</Label></td>
+					<td><Label>Gender</Label></td>
+					<td><Label>City</Label></td>
+					<td><Label>MobileNumber</Label></td>
+					<td><Label></Label>Status</td>
 				</tr>
 
 				<%
 				BankingLogic logic = (BankingLogic) request.getServletContext().getAttribute("logicApi");
-				Map<Long, Map<Long, AccountData>> accountList = logic.getAllAccounts();
+				Map<Long, CustomerData> customerList = logic.getAllCustomerDetails();
 
-				for (long key : accountList.keySet()) {
-					Map<Long, AccountData> subAccountList = accountList.get(key);
-					for (long subKey : subAccountList.keySet()) {
-						AccountData accounts = subAccountList.get(subKey);
+				for (long key : customerList.keySet()) {
+
+					CustomerData customer = logic.getCustomerDetailsByID(key);
 				%>
-
 				<tr>
-					<td><%=accounts.getAccID()%></td>
-					<td><%=accounts.getCustID()%></td>
-
-					<td><%=accounts.getAccType()%></td>
-					<td><%=accounts.getLocation()%></td>
-					<td><%=accounts.getIfscCode()%></td>
-					<td><%=accounts.getBalance()%></td>
-					<td><%=accounts.getStatus()%></td>
+					<td><a
+						href="AddCustomer.jsp?CustomerId=
+						<%=customer.getId()%>"
+						class="idanchor"><%=customer.getId()%> </a></td>
+					<td><%=customer.getName()%></td>
+					<td><%=customer.getGender()%></td>
+					<td><%=customer.getCity()%></td>
+					<td><%=customer.getMobileNo()%></td>
+					<td><%=customer.getStatus()%></td>
 				</tr>
-
 				<%
-				}
 				}
 				%>
 			</table>

@@ -31,7 +31,7 @@ public class LoginDBLogic {
 			try (ResultSet result = statement.executeQuery(sql);) {
 				while (result.next()) {
 					roleId = result.getInt(1);
-					System.out.println(roleId);
+					
 				}
 				return roleId;
 			} catch (Exception ex) {

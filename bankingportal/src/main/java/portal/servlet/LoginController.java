@@ -1,8 +1,10 @@
 package portal.servlet;
 
 import java.io.IOException;
+import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -10,7 +12,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import banking.BankingLogic;
-import customer.CustomerData;
 import userexception.CustomException;
 
 /**
@@ -27,14 +28,22 @@ public class LoginController extends HttpServlet {
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public LoginController() {
-		super();
+
+	public void init(ServletConfig config) {
 		try {
 			logics = new BankingLogic();
+
+			config.getServletContext().setAttribute("logicApi", logics);
+
 		} catch (CustomException ex) {
-			System.out.println("Construct");
+
 			ex.printStackTrace();
 		}
+
+	}
+
+	public LoginController() {
+		super();
 		// TODO Auto-generated constructor stub
 	}
 
@@ -64,12 +73,11 @@ public class LoginController extends HttpServlet {
 		try {
 			roleID = logics.validateUserLogin(userName, password);
 
-			System.out.print("returned ID:"+roleID);
 			if (roleID == 101) {
 
 				HttpSession session = request.getSession();
 				session.setAttribute("Role", "Admin");
-				
+
 				RequestDispatcher dispatch = request.getRequestDispatcher("AdminDashBoard.jsp");
 				dispatch.forward(request, response);
 			} else if (roleID == 102) {
@@ -77,9 +85,8 @@ public class LoginController extends HttpServlet {
 
 				session.setAttribute("Role", "Customer");
 
-				CustomerData customerObj = logics.getCustomerDetailsByID(userName);
-				session.setAttribute("Name", customerObj.getName());
-				request.setAttribute("CustomerDetails", customerObj);
+				session.setAttribute("customerId", userName);
+
 				RequestDispatcher dispatch = request.getRequestDispatcher("UserDashBoard.jsp");
 				dispatch.forward(request, response);
 			} else {
