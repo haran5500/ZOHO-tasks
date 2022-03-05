@@ -184,3 +184,11 @@
 			<!-- 				class="menubutton"> <input type="button" name="Accounts" -->
 			<!-- 				value="Accounts" id="accbtn" onclick="accountView();" -->
 			<!-- 				style="display: inline-block;" class="menubutton"> -->
+			
+			
+			--web.xml
+			
+			 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+	id="WebApp_ID" version="3.1"

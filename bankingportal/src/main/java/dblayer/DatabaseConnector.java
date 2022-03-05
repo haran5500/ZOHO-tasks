@@ -11,6 +11,7 @@ public class DatabaseConnector implements InterConnector {
 	CustomerDBLogic customerLogic = new CustomerDBLogic();
 	AccountDBLogic accountLogic = new AccountDBLogic();
 	LoginDBLogic loginDB = new LoginDBLogic();
+	CredentialsDBLogic credDB = new CredentialsDBLogic();
 
 	// Methods for Initialize
 	@Override
@@ -48,6 +49,11 @@ public class DatabaseConnector implements InterConnector {
 		return customerLogic.changeCustomerStatus(customerID, statusVal);
 	}
 
+	@Override
+	public void updateCustomerInfo(CustomerData customerObj) throws CustomException {
+		customerLogic.updateCustomerInfo(customerObj);
+	}
+
 	// Methods for Account Data access
 	@Override
 	public long addNewAccount(long customerID, AccountData account) throws CustomException {
@@ -63,6 +69,11 @@ public class DatabaseConnector implements InterConnector {
 	@Override
 	public Map<Long, AccountData> getCustomerAccountByID(long customerID) throws CustomException {
 		return accountLogic.getAccountByCustomerID(customerID);
+	}
+
+	@Override
+	public void updateAccountInfo(AccountData accountObj) throws CustomException {
+		accountLogic.updateAccountInfo(accountObj);
 	}
 
 	@Override
@@ -100,4 +111,20 @@ public class DatabaseConnector implements InterConnector {
 		return accountLogic.withdrawAmount(customerID, accountNum, amount);
 	}
 
+	@Override
+	public long getCustomerIDByAccountNum(long accountNum) throws CustomException {
+		return accountLogic.getCustomerIDByAccountNum(accountNum);
+	}
+
+	// method to tranfer amount between accounts
+	@Override
+	public double[] tranferAmount(long fromAccountNum, long toAccountNum, double amount) throws CustomException {
+		return accountLogic.tranferAmount(fromAccountNum, toAccountNum, amount);
+	}
+
+	// method to add credentials of customer
+	@Override
+	public void addCustomerCredentials(long customerId, String password) throws CustomException {
+		credDB.addCustomerCredentials(customerId, password);
+	}
 }

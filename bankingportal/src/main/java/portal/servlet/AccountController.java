@@ -2,7 +2,6 @@ package portal.servlet;
 
 import java.io.IOException;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -42,7 +41,25 @@ public class AccountController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		try {
+
+			// response.getWriter().append("Served at: ").append(request.getContextPath());
+			String actionPath = request.getServletPath();
+			switch (actionPath) {
+
+			case "/deleteAccount": {
+
+				deleteAccount(request, response);
+				break;
+			}
+			case "/activateAccount": {
+				activateAccount(request, response);
+				break;
+			}
+			}
+		} catch (CustomException ex) {
+			ex.getMessage();
+		}
 	}
 
 	/**
@@ -62,11 +79,12 @@ public class AccountController extends HttpServlet {
 				break;
 			}
 			case "/updateAccount": {
+				updateAccount(request, response);
 				break;
 			}
 			}
 		} catch (CustomException ex) {
-
+			ex.getMessage();
 		}
 	}
 
@@ -83,9 +101,57 @@ public class AccountController extends HttpServlet {
 			accountObj.setBalance(Long.parseLong(request.getParameter("Balance")));
 
 			logics.addNewAccount(accountObj.getCustID(), accountObj);
-			response.sendRedirect("AdminDashBoard.jsp");
-//			RequestDispatcher dispatch = request.getRequestDispatcher("AdminDashBoard.jsp");
-//			dispatch.include(request, response);
+
+			request.getRequestDispatcher("AdminDashBoard.jsp").forward(request, response);
+
+		} catch (Exception ex) {
+			throw new CustomException(ex);
+		}
+	}
+
+	private void updateAccount(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException, CustomException {
+
+		try {
+
+			AccountData accountObj = new AccountData();
+			accountObj.setAccID(Long.parseLong(request.getParameter("AccountNumber")));
+			accountObj.setCustID(Long.parseLong(request.getParameter("CustomerID")));
+			accountObj.setAccType(request.getParameter("AccType"));
+			String location = request.getParameter("Location");
+			accountObj.setLocation(location);
+			accountObj.setBalance(Long.parseLong(request.getParameter("Balance")));
+
+			logics.updateAccountInfo(accountObj);
+
+			request.getRequestDispatcher("AdminDashBoard.jsp").forward(request, response);
+
+		} catch (Exception ex) {
+			throw new CustomException(ex);
+		}
+	}
+
+	private void deleteAccount(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException, CustomException {
+
+		try {
+			long customerId = Long.parseLong(request.getParameter("customerId"));
+			long accountId = Long.parseLong(request.getParameter("accountId"));
+			logics.setAccountStatus(customerId, accountId, false);
+			request.getRequestDispatcher("AdminDashBoard.jsp").forward(request, response);
+		} catch (Exception ex) {
+			throw new CustomException(ex);
+		}
+	}
+
+	private void activateAccount(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException, CustomException {
+
+		try {
+			long customerId = Long.parseLong(request.getParameter("customerId"));
+			long accountId = Long.parseLong(request.getParameter("accountId"));
+			logics.setAccountStatus(customerId, accountId, true);
+			request.getRequestDispatcher("AdminDashBoard.jsp").forward(request, response);
 		} catch (Exception ex) {
 			throw new CustomException(ex);
 		}

@@ -36,7 +36,8 @@ public class CustomerDBLogic {
 
 			String insertQuery = "insert into CustomerData(Name,Gender,City,MobileNo) values(?,?,?,?);";
 
-			try (PreparedStatement statement = connection.prepareStatement(insertQuery,PreparedStatement.RETURN_GENERATED_KEYS)) {
+			try (PreparedStatement statement = connection.prepareStatement(insertQuery,
+					PreparedStatement.RETURN_GENERATED_KEYS)) {
 
 				statement.setString(1, customerObj.getName());
 				statement.setString(2, customerObj.getGender());
@@ -106,7 +107,7 @@ public class CustomerDBLogic {
 			}
 
 		} catch (Exception ex) {
-	
+
 			throw new CustomException(ex);
 
 		}
@@ -175,4 +176,28 @@ public class CustomerDBLogic {
 		}
 		return statusVal;
 	}
+
+	public void updateCustomerInfo(CustomerData customerObj) throws CustomException {
+		Validator.validateObject(customerObj);
+
+		try (Connection connection = Connectivity.CONNECTION.getMySQLConnection();) {
+			String updateQuery = "update CustomerData set Name=?,Gender=?,City=?,MobileNo=?,Status=? where CustomerID=?;";
+			try (PreparedStatement statement = connection.prepareStatement(updateQuery)) {
+				statement.setString(1, customerObj.getName());
+				statement.setString(2, customerObj.getGender());
+				statement.setString(3, customerObj.getCity());
+				statement.setLong(4, customerObj.getMobileNo());
+				statement.setBoolean(5, customerObj.getStatus());
+				statement.setLong(6, customerObj.getId());
+
+				statement.executeUpdate();
+
+			} catch (Exception ex) {
+				throw new CustomException(ex);
+			}
+		} catch (Exception ex) {
+			throw new CustomException(ex);
+		}
+	}
+
 }

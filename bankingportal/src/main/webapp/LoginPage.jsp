@@ -92,10 +92,14 @@ input[type="button"]:hover {
 </style>
 
 <script>
-	var error = '${errormsg}';
-	document.getElementById("error").innerText = error;
+
+	var error = '${errorMessage}';
+ 	document.getElementById("error").innerHTML = error;
+	
 	if (performance.navigation.type == performance.navigation.TYPE_RELOAD) {
-		document.getElementById("error").innerText = '';
+		
+		alert(error);
+		document.getElementById("error").innerHTML = '';
 	}
 
 	function isNumberKey(evt)
@@ -140,13 +144,13 @@ input[type="button"]:hover {
 					name="showpassword"><label for="showpassword">Show
 					Password</label> <input type="button" name="Reset" value="Reset"
 					onclick="resetform();"> <br> <br>
-				<h3 class="error" onload="help();">
+				<div class="error" id="error">
 					<%
 					if (null != request.getAttribute("errorMessage")) {
 						out.println("***" + request.getAttribute("errorMessage") + "**!");
 					}
 					%>
-				</h3>
+				</div>
 				<br> <br> <input type="submit" name="Login" value="Login">
 			</fieldset>
 		</form>

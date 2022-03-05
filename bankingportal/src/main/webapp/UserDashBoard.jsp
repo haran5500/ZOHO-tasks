@@ -114,11 +114,11 @@
 
 				<td><%=customer.getMobileNo()%></td>
 			</tr>
-			<tr>
-				<td><Label></Label>Status</td>
+			<!-- 			<tr> -->
+			<!-- 				<td><Label></Label>Status</td> -->
 
-				<td><%=customer.getStatus()%></td>
-			</tr>
+			<%-- 				<td><%=customer.getStatus()%></td> --%>
+			<!-- 			</tr> -->
 
 		</table>
 	</div>
@@ -136,12 +136,13 @@
 				<td><Label>Branch</Label></td>
 				<td><Label>IFSC Code</Label></td>
 				<td><Label>Account Balance</Label></td>
-				<td><Label>Status</Label></td>
+				<!-- 				<td><Label>Status</Label></td> -->
 				<!-- 				<td><Label>Operations</Label></td> -->
 			</tr>
 			<%
-			for (long key : accountsMap.keySet()) {
-				AccountData account = accountsMap.get(key);
+			if (accountsMap != null) {
+				for (long key : accountsMap.keySet()) {
+					AccountData account = accountsMap.get(key);
 			%>
 			<tr>
 
@@ -151,10 +152,11 @@
 				<td><%=account.getLocation()%></td>
 				<td><%=account.getIfscCode()%></td>
 				<td><%=account.getBalance()%></td>
-				<td><%=account.getStatus()%></td>
+				<%-- 				<td><%=account.getStatus()%></td> --%>
 
 			</tr>
 			<%
+			}
 			}
 			%>
 		</table>

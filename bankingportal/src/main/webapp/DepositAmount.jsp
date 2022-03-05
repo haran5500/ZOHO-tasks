@@ -1,5 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+
+<%@ page import="customer.CustomerData"%>
+<%@ page import="account.AccountData"%>
+<%@ page import="banking.BankingLogic"%>
+<%@ page import="java.util.Map"%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -30,7 +36,7 @@ fieldset {
 	text-align: center;
 }
 
-input[type="text"] {
+input[type="text"], .dropdn {
 	height: 40px;
 	width: 80%;
 	border: none;
@@ -39,7 +45,7 @@ input[type="text"] {
 	background: none;
 }
 
-input[type="text"]:focus {
+input[type="text"]:focus, .dropdn:focus {
 	background: white;
 }
 
@@ -76,7 +82,7 @@ input[type="submit"], .resetbtn {
 	border-radius: 25px;
 }
 
-.resetbtn{
+.resetbtn {
 	width: 20%;
 }
 
@@ -118,7 +124,7 @@ function isNumberKey(evt)
 
 
 	<div class="div">
-		<form action="" id="transferform">
+		<form action="deposit" method="post" id="transferform">
 			<fieldset>
 
 				<legend>
@@ -132,9 +138,29 @@ function isNumberKey(evt)
 						<td><label class="required">Account Number</label></td>
 					</tr>
 					<tr>
-						<td><input type="text" name="accountnumber" min="6"
-							maxlength="10" required onkeypress="return isNumberKey(event);"
-							placeholder="Account Number"></td>
+						<td><select autofocus="autofocus" name="AccountNumber"
+							required="required" class="dropdn">
+								<option selected disabled value="">Select Account
+									Number</option>
+								<%
+								BankingLogic logic = new BankingLogic();
+								Map<Long, Map<Long, AccountData>> accountsMap = logic.getAllActiveAccounts();
+								for (long key : accountsMap.keySet()) {
+									Map<Long, AccountData> subAccountsMap = logic.getActiveAccounts(key);
+									for (long subKey : subAccountsMap.keySet()) {
+										if (subAccountsMap.get(subKey).getStatus()) {
+								%>
+								<option value="<%=subKey%>"><%=subKey%></option>
+								<%
+								}
+								}
+								}
+								%>
+						</select></td>
+
+						<!-- 						<td><input type="text" name="accountnumber" min="6" -->
+						<!-- 							maxlength="10" required onkeypress="return isNumberKey(event);" -->
+						<!-- 							placeholder="Account Number"></td> -->
 
 					</tr>
 					<tr>
@@ -147,8 +173,8 @@ function isNumberKey(evt)
 					</tr>
 					<tr>
 						<td><input type="button" name="Reset" value="Reset"
-							onclick="resetform();" class="resetbtn"><input type="submit"
-							name="DepositAmount" value="Deposit Amount"></td>
+							onclick="resetform();" class="resetbtn"><input
+							type="submit" name="DepositAmount" value="Deposit Amount"></td>
 					</tr>
 					<tr>
 						<td></td>

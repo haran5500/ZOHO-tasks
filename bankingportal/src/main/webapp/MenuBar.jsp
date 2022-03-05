@@ -13,7 +13,8 @@
 }
 
 #menu {
-	text-align: center;
+
+/* 	text-align: center; */
 	background-color: darkslategrey;
 	width: 100%;
 	height: 150px;
@@ -23,8 +24,9 @@
 	color: white;
 	margin-top: 10px;
 	display: block;
-	text-align: center;
-	margin-top: 10px;
+	line-height:50px;
+	margin-left: 15px;
+/* 	text-align: center; */
 }
 
 #menu #div2 {
@@ -53,7 +55,7 @@
 	font-weight: bold;
 }
 
-.anchor {
+.anchor, .logoutbtn {
 	text-decoration: none;
 	width: auto;
 	height: 25px;
@@ -68,10 +70,14 @@
 	display: inline-block;
 }
 
-.menubutton:hover, .anchor:hover {
+.menubutton:hover, .anchor:hover, .logoutbtn:hover {
 	background-color: indigo;
 	box-shadow: 0px 5px 5px 0px #ffa260;
 	cursor: grab;
+}
+
+.logoutbtn {
+	
 }
 </style>
 
@@ -93,6 +99,7 @@
 			// 				det.style.display = "block";
 			// 			}
 		} else {
+
 			document.forms[0].action = "UserDashBoard.jsp";
 			document.forms[0].method = "post"; // "get"
 			document.forms[0].submit();
@@ -110,12 +117,19 @@
 			div.style.display = "none";
 		}
 	}
+
+	function confirmation() {
+		var confirmValue = confirm();
+	}
+
+	function logoutSession() {
+
+	}
 </script>
 
 
 </head>
 <body>
-
 	<div id="menu">
 		<%
 		String roleValue = (String) session.getAttribute("Role");
@@ -123,34 +137,37 @@
 		%>
 		<div id="div1">
 			<h1>Welcome Admin!</h1>
-			<h2>DashBoard</h2>
 		</div>
 		<div id="div2">
 			<a href="CustomerList.jsp" class="anchor">CustomerList </a> <a
 				href="AdminDashBoard.jsp" class="anchor">Account List </a> <a
 				href="WithdrawAmount.jsp" class="anchor">Withdraw Amount </a> <a
 				href="DepositAmount.jsp" class="anchor">Deposit Amount</a> <a
-				href="TransferAmount.jsp" class="anchor">Transfer to Account </a> <input
-				type="button" name="Logout" value="Logout" class="menubutton">
+				href="TransferAmount.jsp" class="anchor">Transfer to Account </a> <a
+				href="logout" class="logoutbtn">Logout</a>
 		</div>
 		<%
-		} else {
+		} else if (roleValue.equals("Customer")) {
 		String userName = (String) request.getParameter("UserName");
 		%>
 		<div id="div1">
 			<h1>
+				Hi
 				<%
-				out.print(userName);
-				%>
+			out.print(userName);
+			%>
 			</h1>
-			<h2>DashBoard</h2>
+
 		</div>
 		<div id="div2">
 
 			<input type="button" name="Show Profile" value="Profile"
 				onclick="showProfile();" class="menubutton"> <a
-				href="TransferAmount.jsp" class="anchor">Transfer to Account </a> <input
-				type="button" name="Logout" value="Logout" class="menubutton">
+				href="TransferAmount.jsp" class="anchor">Transfer to Account </a> <a
+				href="logout" class="logoutbtn">Logout</a>
+			<!-- 				 <input -->
+			<!-- 				type="button" name="Logout" value="Logout" class="menubutton" -->
+			<!-- 				onclick="logoutSession();"> -->
 		</div>
 		<%
 		}
@@ -159,6 +176,5 @@
 
 
 	</div>
-
 </body>
 </html>

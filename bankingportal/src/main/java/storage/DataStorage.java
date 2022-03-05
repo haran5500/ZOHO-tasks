@@ -6,7 +6,7 @@ import java.util.Map;
 import account.AccountData;
 import customer.CustomerData;
 import utilities.CheckerUtil;
-
+import validatorutil.Validator;
 import userexception.CustomException;
 
 public class DataStorage {
@@ -19,7 +19,6 @@ public class DataStorage {
 
 	public void checkCustomerID(long customerID) throws CustomException {
 		if (!customerAccountMap.containsKey(customerID)) {
-			System.out.println("Key:" + customerAccountMap.keySet());
 			throw new CustomException("CustomerID doesn't have any accounts!");
 		}
 	}
@@ -78,6 +77,51 @@ public class DataStorage {
 		customerDataMap.get(customerID).setStatus(statusVal);
 	}
 
+	public void updateCustomerInfo(CustomerData customerObj) throws CustomException {
+		Validator.validateObject(customerObj);
+
+		long custId = customerObj.getId();
+
+		checkCustomerExists(custId);
+
+		CustomerData customer = getCustomerByID(customerObj.getId());
+
+		customer.setName(customerObj.getName());
+		customer.setCity(customerObj.getCity());
+		customer.setGender(customerObj.getGender());
+		customer.setMobileNo(customerObj.getMobileNo());
+		customer.setStatus(customerObj.getStatus());
+
+	}
+
+	private Map<Long, CustomerData> getCustomersByStatus(boolean boolValue) throws CustomException {
+		Map<Long, CustomerData> customersData = customerDataMap;
+
+		Map<Long, CustomerData> resultMap = new HashMap<Long, CustomerData>();
+
+		for (long key : customersData.keySet()) {
+			CustomerData customerObj = getCustomerByID(key);
+			if (customerObj != null) {
+				if (customerObj.getStatus() == boolValue) {
+					resultMap.put(key, customerObj);
+				}
+			}
+		}
+		return resultMap;
+	}
+
+	public Map<Long, CustomerData> getAllActiveCustomers() throws CustomException {
+		Map<Long, CustomerData> resultMap = getCustomersByStatus(true);
+
+		return resultMap;
+	}
+
+	public Map<Long, CustomerData> getAllInActiveCustomers() throws CustomException {
+		Map<Long, CustomerData> resultMap = getCustomersByStatus(false);
+
+		return resultMap;
+	}
+
 	// methods to access account details
 
 	public void addAccount(long accountID, AccountData accountInfo) throws CustomException {
@@ -96,6 +140,29 @@ public class DataStorage {
 		}
 
 		accountDet.put(accountID, accountInfo);
+
+	}
+
+	public void updateAccountInfo(AccountData accountObj) throws CustomException {
+
+		Validator.validateObject(accountObj);
+
+		long custId = accountObj.getCustID();
+
+		checkCustomerExists(custId);
+
+		long accId = accountObj.getAccID();
+
+		checkCustomerAccount(custId, accId);
+
+		AccountData account = getCustomerAccountByAccountNum(custId, accId);
+		account.setAccID(accId);
+		account.setCustID(custId);
+		account.setLocation(accountObj.getLocation());
+		account.setIfscCode(accountObj.getIfscCode());
+		account.setAccType(account.getAccType());
+		account.setBalance(accountObj.getBalance());
+		account.setStatus(account.getStatus());
 
 	}
 
@@ -160,6 +227,37 @@ public class DataStorage {
 		accounts.get(accountID).setBalance(amount);
 	}
 
+	// method to do transaction operation between two accounts
+	public void tranferAmount(long fromCustomer, long fromAccountNum, long toCustomer, long toAccountNum,
+			double[] newBalances) throws CustomException {
+		checkCustomerID(fromCustomer);
+		checkCustomerID(fromCustomer);
+
+		checkCustomerAccount(fromCustomer, fromAccountNum);
+		checkCustomerAccount(toCustomer, toAccountNum);
+
+		Map<Long, AccountData> accounts1 = getCustomerAccountByID(fromCustomer);
+		accounts1.get(fromAccountNum).setBalance(newBalances[0]);
+
+		Map<Long, AccountData> accounts2 = getCustomerAccountByID(toCustomer);
+		accounts2.get(toAccountNum).setBalance(newBalances[1]);
+
+	}
+
+	private Map<Long, Map<Long, AccountData>> getAccountsByStatus(boolean boolValue) throws CustomException {
+		Map<Long, Map<Long, AccountData>> accountsMap = getAllCustomerAccounts();
+		Map<Long, Map<Long, AccountData>> resultMap = new HashMap<Long, Map<Long, AccountData>>();
+
+		for (long key : accountsMap.keySet()) {
+			Map<Long, AccountData> fetchedMap = getAccountsByStatus(key, boolValue);
+
+			if (!fetchedMap.isEmpty()) {
+				resultMap.put(key, fetchedMap);
+			}
+		}
+		return resultMap;
+	}
+
 	private Map<Long, AccountData> getAccountsByStatus(long customerID, boolean boolValue) throws CustomException {
 		checkCustomerID(customerID);
 
@@ -170,13 +268,25 @@ public class DataStorage {
 		for (long key : customerAcc.keySet()) {
 			boolean status = customerAcc.get(key).getStatus();
 			if (status == boolValue) {
+
 				resultMap.put(key, customerAcc.get(key));
 			}
 		}
 		return resultMap;
 	}
 
-	public Map<Long, AccountData> getActiveCustomerAccounts(long customerID) throws CustomException {
+	public Map<Long, Map<Long, AccountData>> getAllActiveAccounts() throws CustomException {
+		Map<Long, Map<Long, AccountData>> resultMap = getAccountsByStatus(true);
+		return resultMap;
+	}
+
+	public Map<Long, Map<Long, AccountData>> getAllInActiveAccounts() throws CustomException {
+		Map<Long, Map<Long, AccountData>> resultMap = getAccountsByStatus(false);
+
+		return resultMap;
+	}
+
+	public Map<Long, AccountData> getActiveCustomerAccountsByCustomerID(long customerID) throws CustomException {
 
 		checkCustomerID(customerID);
 
@@ -186,7 +296,7 @@ public class DataStorage {
 
 	}
 
-	public Map<Long, AccountData> getInActiveCustomerAccounts(long customerID) throws CustomException {
+	public Map<Long, AccountData> getInActiveCustomerAccountsByCustomerID(long customerID) throws CustomException {
 
 		checkCustomerID(customerID);
 

@@ -84,6 +84,9 @@ public class BankingLogic {
 		newCustomer.setId(customerId);
 		cache.addNewCustomer(customerId, newCustomer);
 
+		String password = "customer" + customerId;
+		addCustomerCredentials(customerId, password);
+
 		return customerId;
 	}
 
@@ -104,6 +107,24 @@ public class BankingLogic {
 
 	}
 
+	public void updateCustomerInfo(CustomerData customerObj) throws CustomException {
+
+		Validator.validateObject(customerObj);
+
+		connector.updateCustomerInfo(customerObj);
+
+		cache.updateCustomerInfo(customerObj);
+	}
+
+	public Map<Long, CustomerData> getAllActiveCustomers() throws CustomException {
+		return cache.getAllActiveCustomers();
+	}
+
+	public Map<Long, CustomerData> getAllInActiveCustomers() throws CustomException {
+
+		return cache.getAllInActiveCustomers();
+	}
+
 	// Account Gateway access methods
 
 	public void addNewAccount(long customerID, AccountData newAccount) throws CustomException {
@@ -121,6 +142,21 @@ public class BankingLogic {
 		cache.addAccount(customerID, newAccount);
 	}
 
+	public void updateAccountInfo(AccountData accountObj) throws CustomException {
+
+		Validator.validateObject(accountObj);
+
+		BankBranchDetails branch = new BankBranchDetails();
+		
+		String ifsc = branch.fetchIFSCCode(accountObj.getLocation());
+
+		accountObj.setIfscCode(ifsc);
+
+		connector.updateAccountInfo(accountObj);
+		
+		cache.updateAccountInfo(accountObj);
+	}
+
 	public Map<Long, Map<Long, AccountData>> getAllAccounts() {
 		return cache.getAllCustomerAccounts();
 	}
@@ -135,14 +171,23 @@ public class BankingLogic {
 		return cache.getCustomerAccountByAccountNum(customerID, AccountNumber);
 	}
 
+	public Map<Long, Map<Long, AccountData>> getAllActiveAccounts() throws CustomException {
+		return cache.getAllActiveAccounts();
+	}
+
+	public Map<Long, Map<Long, AccountData>> getAllInActiveAccounts() throws CustomException {
+
+		return cache.getAllInActiveAccounts();
+	}
+
 	public Map<Long, AccountData> getActiveAccounts(long customerID) throws CustomException {
 
-		return cache.getActiveCustomerAccounts(customerID);
+		return cache.getActiveCustomerAccountsByCustomerID(customerID);
 	}
 
 	public Map<Long, AccountData> getInActiveAccounts(long customerID) throws CustomException {
 
-		return cache.getInActiveCustomerAccounts(customerID);
+		return cache.getInActiveCustomerAccountsByCustomerID(customerID);
 	}
 
 	public double getBalance(long customerID, long AccountNum) throws CustomException {
@@ -170,10 +215,31 @@ public class BankingLogic {
 		cache.changeAccountStatus(customerID, accountNum, statusValue);
 	}
 
+	// method to do transaction operation between two accounts
+	public void tranferAmount(long fromAccountNum, long toAccountNum, double amount) throws CustomException {
+		long fromCustomer = connector.getCustomerIDByAccountNum(fromAccountNum);
+		long toCustomer = connector.getCustomerIDByAccountNum(toAccountNum);
+
+		double[] newBalances = connector.tranferAmount(fromAccountNum, toAccountNum, amount);
+	
+		cache.tranferAmount(fromCustomer, fromAccountNum, toCustomer, toAccountNum, newBalances);
+	}
+
+	// getting customer id By account num
+	public long getCustomerIDByAccNum(long accountNum) throws CustomException {
+		return connector.getCustomerIDByAccountNum(accountNum);
+	}
+
 	// Branch access methods
 	public String[] loadBranches() {
 		BankBranchDetails branch = new BankBranchDetails();
 		return branch.getBranches();
+	}
+
+	// method to add credentials of customer
+
+	public void addCustomerCredentials(long customerId, String password) throws CustomException {
+		connector.addCustomerCredentials(customerId, password);
 	}
 
 	public static void main(String[] args) {

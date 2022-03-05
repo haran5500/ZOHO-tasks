@@ -9,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 import account.AccountData;
+import customer.CustomerData;
 import utilities.CheckerUtil;
 import userexception.CustomException;
 
@@ -35,7 +36,8 @@ public class AccountDBLogic {
 		try (Connection connection = Connectivity.CONNECTION.getMySQLConnection();) {
 			String insertQuery = "insert into AccountData(CustomerID,AccountType,Location,IFSCCode,AccountBalance,Status) values(?,?,?,?,?,?);";
 
-			try (PreparedStatement statement = connection.prepareStatement(insertQuery,PreparedStatement.RETURN_GENERATED_KEYS)) {
+			try (PreparedStatement statement = connection.prepareStatement(insertQuery,
+					PreparedStatement.RETURN_GENERATED_KEYS)) {
 				statement.setLong(1, accountObj.getCustID());
 				statement.setString(2, accountObj.getAccType());
 				statement.setString(3, accountObj.getLocation());
@@ -65,6 +67,33 @@ public class AccountDBLogic {
 		return AccountID;
 	}
 
+	public void updateAccountInfo(AccountData accountObj) throws CustomException {
+		try (Connection connection = Connectivity.CONNECTION.getMySQLConnection();) {
+			String insertQuery = "update AccountData set CustomerID=?,AccountType=?,Location=?,IFSCCode=?,AccountBalance=?,Status=? where AccountID=?;";
+
+			try (PreparedStatement statement = connection.prepareStatement(insertQuery,
+					PreparedStatement.RETURN_GENERATED_KEYS)) {
+				statement.setLong(1, accountObj.getCustID());
+				statement.setString(2, accountObj.getAccType());
+				statement.setString(3, accountObj.getLocation());
+				statement.setString(4, accountObj.getIfscCode());
+				statement.setDouble(5, accountObj.getBalance());
+				statement.setBoolean(6, accountObj.getStatus());
+				statement.setLong(7, accountObj.getAccID());
+
+				statement.executeUpdate();
+
+			} catch (SQLException ex) {
+				throw new CustomException(ex);
+
+			}
+
+		} catch (SQLException ex) {
+			throw new CustomException(ex);
+
+		}
+	}
+
 	public Map<Long, Map<Long, AccountData>> getAllCustomerAccounts() throws CustomException {
 		Map<Long, Map<Long, AccountData>> customerAccountsMap = new HashMap<Long, Map<Long, AccountData>>();
 		try (Connection connection = Connectivity.CONNECTION.getMySQLConnection();) {
@@ -75,8 +104,7 @@ public class AccountDBLogic {
 
 				try (ResultSet result = statement.executeQuery(sql);) {
 
-					if(result==null)
-					{
+					if (result == null) {
 						return customerAccountsMap;
 					}
 					while (result.next()) {
@@ -108,7 +136,7 @@ public class AccountDBLogic {
 						}
 
 						accountsDet.put(accID, accounts);
-						
+
 					}
 				}
 				return customerAccountsMap;
@@ -176,11 +204,35 @@ public class AccountDBLogic {
 	}
 
 	public AccountData getCustomerAccountByAccountNum(long customerID, long accountNum) throws CustomException {
-		
+
 		Map<Long, AccountData> accounts = getAccountByCustomerID(customerID);
 		return accounts.get(accountNum);
 	}
-	
+
+	public long getCustomerIDByAccountNum(long accountNum) throws CustomException {
+		try (Connection connection = Connectivity.CONNECTION.getMySQLConnection();) {
+
+			String sql = "select CustomerID from AccountData where AccountID=?;";
+			try (PreparedStatement statement = connection.prepareStatement(sql)) {
+				statement.setLong(1, accountNum);
+
+				try (ResultSet result = statement.executeQuery();) {
+					long customerID = -1;
+					while (result.next()) {
+						customerID = result.getLong(1);
+					}
+					return customerID;
+				}
+			} catch (Exception ex) {
+				throw new CustomException(ex);
+
+			}
+		} catch (Exception ex) {
+			throw new CustomException(ex);
+
+		}
+	}
+
 	public boolean changeStatus(long customerID, long accountID, boolean statusVal) throws CustomException {
 		try (Connection connection = Connectivity.CONNECTION.getMySQLConnection();) {
 
@@ -232,13 +284,13 @@ public class AccountDBLogic {
 		}
 	}
 
-	public void checkAccountType(String accountType) throws CustomException {
+	private void checkAccountType(String accountType) throws CustomException {
 		if (accountType.equals("Deposit")) {
 			throw new CustomException("Withdraw cannot be possible in deposit account!");
 		}
 	}
 
-	public void updateBalance(long customerID, long accountID, double amount) throws CustomException {
+	private void updateBalance(long customerID, long accountID, double amount) throws CustomException {
 		CheckerUtil.validateNumbeNegative(customerID);
 		CheckerUtil.validateNumbeNegative(accountID);
 		CheckerUtil.validateNumbeNegative(amount);
@@ -269,37 +321,18 @@ public class AccountDBLogic {
 		CheckerUtil.validateNumbeNegative(customerID);
 		CheckerUtil.validateNumbeNegative(accountID);
 		CheckerUtil.validateNumbeNegative(amount);
-		try (Connection connection = Connectivity.CONNECTION.getMySQLConnection();) {
 
-			String selectQuery = "select AccountType from AccountData where AccountID=? and CustomerID=?";
+		String accountType = getAccountType(customerID, accountID);
+		checkAccountType(accountType);
+		double fetchedBalance = getBalanceByAccountNum(customerID, accountID);
+		CheckerUtil.checkLowBalance(fetchedBalance, amount);
 
-			try (PreparedStatement preparedSelect = connection.prepareStatement(selectQuery)) {
-				preparedSelect.setLong(1, accountID);
-				preparedSelect.setLong(2, customerID);
-				double fetchedBalance = 0;
-				try (ResultSet result = preparedSelect.executeQuery()) {
-					while (result.next()) {
-						String accountType = result.getString(1);
-						checkAccountType(accountType);
-						fetchedBalance = getBalanceByAccountNum(customerID, accountID);
-						CheckerUtil.checkLowBalance(fetchedBalance, amount);
+		if (fetchedBalance != 0) {
+			newBalance = fetchedBalance - amount;
 
-					}
-					if (fetchedBalance != 0) {
-						newBalance = fetchedBalance - amount;
-
-						updateBalance(customerID, accountID, newBalance);
-					}
-				} catch (Exception ex) {
-					throw new CustomException(ex);
-
-				}
-
-			}
-		} catch (Exception ex) {
-			throw new CustomException(ex);
-
+			updateBalance(customerID, accountID, newBalance);
 		}
+
 		return newBalance;
 	}
 
@@ -308,31 +341,13 @@ public class AccountDBLogic {
 
 		try (Connection connection = Connectivity.CONNECTION.getMySQLConnection();) {
 
-			String selectQuery = "select AccountType from AccountData where AccountID=? and CustomerID=?";
+			String accountType = getAccountType(customerID, accountID);
+			checkAccountType(accountType);
+			double fetchedBalance = getBalanceByAccountNum(customerID, accountID);
 
-			try (PreparedStatement preparedSelect = connection.prepareStatement(selectQuery)) {
-				preparedSelect.setLong(1, accountID);
-				preparedSelect.setLong(2, customerID);
+			newBalance = fetchedBalance + amount;
 
-				try (ResultSet result = preparedSelect.executeQuery()) {
-					while (result.next()) {
-						String accountType = result.getString(1);
-						checkAccountType(accountType);
-						double fetchedBalance = getBalanceByAccountNum(customerID, accountID);
-
-						newBalance = fetchedBalance + amount;
-
-						updateBalance(customerID, accountID, newBalance);
-					}
-				} catch (Exception ex) {
-					throw new CustomException(ex);
-
-				}
-
-			} catch (Exception ex) {
-				throw new CustomException(ex);
-
-			}
+			updateBalance(customerID, accountID, newBalance);
 
 		} catch (Exception ex) {
 			throw new CustomException(ex);
@@ -340,9 +355,9 @@ public class AccountDBLogic {
 		}
 		return newBalance;
 	}
-	
-	public Map<Long, AccountData> getCustomerAccountsByStatus(long customerID,boolean statusValue)throws CustomException
-	{
+
+	public Map<Long, AccountData> getCustomerAccountsByStatus(long customerID, boolean statusValue)
+			throws CustomException {
 
 		Map<Long, AccountData> customerAcc = getAccountByCustomerID(customerID);
 
@@ -355,5 +370,68 @@ public class AccountDBLogic {
 			}
 		}
 		return resultMap;
+	}
+
+	private String getAccountType(long customerID, long accountNum) throws CustomException {
+		try (Connection connection = Connectivity.CONNECTION.getMySQLConnection();) {
+
+			String selectQuery = "select AccountType from AccountData where AccountID=? and CustomerID=?";
+
+			try (PreparedStatement preparedSelect = connection.prepareStatement(selectQuery)) {
+
+				preparedSelect.setLong(1, accountNum);
+				preparedSelect.setLong(2, customerID);
+				String accountType = "";
+				try (ResultSet result = preparedSelect.executeQuery()) {
+					while (result.next()) {
+						accountType = result.getString(1);
+
+					}
+					return accountType;
+				} catch (Exception ex) {
+					throw new CustomException(ex);
+
+				}
+			} catch (Exception ex) {
+				throw new CustomException(ex);
+
+			}
+		} catch (Exception ex) {
+			throw new CustomException(ex);
+
+		}
+	}
+
+	// method to tranfer amount between accounts
+
+	public double[] tranferAmount(long fromAccountNum, long toAccountNum, double amount) throws CustomException {
+		CheckerUtil.validateNumbeNegative(fromAccountNum);
+		CheckerUtil.validateNumbeNegative(toAccountNum);
+		CheckerUtil.validateNumbeNegative(amount);
+
+		long fromCustomerID = getCustomerIDByAccountNum(fromAccountNum);
+		long toCustomerID = getCustomerIDByAccountNum(toAccountNum);
+
+		String fromAccountType = getAccountType(fromCustomerID, fromAccountNum);
+		String toAccountType = getAccountType(toCustomerID, toAccountNum);
+		checkAccountType(fromAccountType);
+		checkAccountType(toAccountType);
+
+		double fetchedBalance1 = getBalanceByAccountNum(fromCustomerID, fromAccountNum);
+		CheckerUtil.checkLowBalance(fetchedBalance1, amount);
+
+		double newBalance1 = fetchedBalance1 - amount;
+
+		double fetchedBalance2 = getBalanceByAccountNum(toCustomerID, toAccountNum);
+
+		double newBalance2 = fetchedBalance2 + amount;
+
+		updateBalance(fromCustomerID, fromAccountNum, newBalance1);
+
+		updateBalance(toCustomerID, toAccountNum, newBalance2);
+
+		double[] newBalances = { newBalance1, newBalance2 };
+
+		return newBalances;
 	}
 }

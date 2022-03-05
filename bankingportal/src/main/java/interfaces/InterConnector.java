@@ -24,9 +24,13 @@ public interface InterConnector {
 
 	public boolean switchCustomerStatus(long customerID, boolean statusVal) throws CustomException;
 
+	public void updateCustomerInfo(CustomerData customerObj) throws CustomException;
+
 	// Methods for Account Data access
 
 	public long addNewAccount(long customerID, AccountData account) throws CustomException;
+
+	public void updateAccountInfo(AccountData accountObj) throws CustomException;
 
 	public Map<Long, Map<Long, AccountData>> getAllCustomerAccounts() throws CustomException;
 
@@ -48,4 +52,13 @@ public interface InterConnector {
 
 	public double withdrawAmount(long customerID, long accountNum, double amount) throws CustomException;
 
+	public long getCustomerIDByAccountNum(long accountNum) throws CustomException;
+
+	// method to tranfer amount between accounts
+
+	public double[] tranferAmount(long fromAccountNum, long toAccountNum, double amount) throws CustomException;
+
+	// method to add credentials of customer
+
+	public void addCustomerCredentials(long customerId, String password) throws CustomException;
 }

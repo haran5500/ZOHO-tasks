@@ -1,7 +1,6 @@
 package portal.servlet;
 
 import java.io.IOException;
-import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
@@ -54,8 +53,17 @@ public class LoginController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// TODO Auto-generated method stub
-//		response.getWriter().append("Served at: ").append(request.getContextPath());
-
+		response.getWriter().append("Served at: ").append(request.getContextPath());
+		String actionPath = request.getServletPath();
+		switch (actionPath) {
+		case "/logout": {
+			
+			HttpSession session = request.getSession();
+			session.invalidate();
+			request.getRequestDispatcher("LoginPage.jsp").forward(request, response);
+			break;
+		}
+		}
 	}
 
 	/**
@@ -65,38 +73,50 @@ public class LoginController extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// TODO Auto-generated method stub
-//		doGet(request, response);
-		long userName = Long.parseLong(request.getParameter("UserID"));
-		String password = request.getParameter("Password");
+		doGet(request, response);
 
-		long roleID = -1;
-		try {
-			roleID = logics.validateUserLogin(userName, password);
+		String actionPath = request.getServletPath();
 
-			if (roleID == 101) {
+		switch (actionPath) {
 
-				HttpSession session = request.getSession();
-				session.setAttribute("Role", "Admin");
+		case "/login": {
+			
+			long userName = Long.parseLong(request.getParameter("UserID"));
+			String password = request.getParameter("Password");
 
-				RequestDispatcher dispatch = request.getRequestDispatcher("AdminDashBoard.jsp");
-				dispatch.forward(request, response);
-			} else if (roleID == 102) {
-				HttpSession session = request.getSession();
+			long roleID = -1;
+			try {
+				roleID = logics.validateUserLogin(userName, password);
 
-				session.setAttribute("Role", "Customer");
+				if (roleID == 101) {
 
-				session.setAttribute("customerId", userName);
+					HttpSession session = request.getSession();
+					session.setAttribute("Role", "Admin");
 
-				RequestDispatcher dispatch = request.getRequestDispatcher("UserDashBoard.jsp");
-				dispatch.forward(request, response);
-			} else {
-				request.setAttribute("errorMessage", "Invalid username or password");
-				RequestDispatcher dispatch = request.getRequestDispatcher("LoginPage.jsp");
-				dispatch.include(request, response);
+					RequestDispatcher dispatch = request.getRequestDispatcher("AdminDashBoard.jsp");
+					dispatch.forward(request, response);
+				} else if (roleID == 102) {
+					HttpSession session = request.getSession();
+
+					session.setAttribute("Role", "Customer");
+
+					session.setAttribute("customerId", userName);
+
+					RequestDispatcher dispatch = request.getRequestDispatcher("UserDashBoard.jsp");
+					dispatch.forward(request, response);
+				} else {
+					request.setAttribute("errorMessage", "Invalid username or password");
+					RequestDispatcher dispatch = request.getRequestDispatcher("LoginPage.jsp");
+					dispatch.forward(request, response);
+				}
+			} catch (CustomException e) {
+				e.printStackTrace();
 			}
-		} catch (CustomException e) {
-			e.printStackTrace();
+			break;
 		}
+
+		}
+
 	}
 
 }
