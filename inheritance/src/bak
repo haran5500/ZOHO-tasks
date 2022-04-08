@@ -1,0 +1,15 @@
+	
+	private void invokeSwiftType(Swift swiftObj)
+	{
+		printTypes(swiftObj);
+	}
+	
+	private void invokeSCrossType(SCross zeta)
+	{
+		printTypes(zeta);
+	}
+
+	private void invokeXUVType(XUV classic)
+	{
+		printTypes(classic);
+	}
