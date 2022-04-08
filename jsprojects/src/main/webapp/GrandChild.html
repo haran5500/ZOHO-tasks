@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Grand Child</title>
+<style type="text/css">
+* {
+	font-size: 16px;
+	font-family: helvetica;
+}
+
+#dataDiv, #searchData, #message {
+	margin-top: 40px;
+	margin-left: 100px;
+}
+
+#entryTable td {
+	width: 200px;
+	height: 40px;
+}
+
+#entryTable tr:first-child td {
+	text-align: center;
+	font-weight: bold;
+}
+
+#entryTable tr td:first-child {
+	width: 10px;
+	text-align: center;
+}
+
+input[type="text"] {
+	width: 180px;
+	height: 25px;
+}
+</style>
+<script type="text/javascript">
+	var rows;
+	var valueMap = new Map(new Array());
+	function generateRows() {
+		rows = document.getElementById("rowValue").value;
+		var tableElement = document.getElementById("entryTable");
+		var rowLen = tableElement.rows.length;
+		document.getElementById("dataDiv").style.display = "block";
+
+		if (rowLen > 1) {
+			for (var i = rowLen - 1; i > 0; i--) {
+				tableElement.deleteRow(i);
+			}
+		}
+
+		rowLen = tableElement.rows.length;
+		for (var iter = 0; iter < rows; iter++) {
+			var idVal1 = 'father' + (iter + 1);
+			var inpField1 = document.createElement("input");
+			inpField1.type = "text";
+			inpField1.setAttribute("id", 'father' + (iter + 1));
+
+			var idVal2 = 'son' + (iter + 1);
+			var inpField2 = document.createElement("input");
+			inpField2.type = "text";
+			inpField2.setAttribute("id", 'son' + (iter + 1));
+
+			var rowEle = tableElement.insertRow(rowLen);
+			var col1 = rowEle.insertCell(0);
+			var col2 = rowEle.insertCell(1);
+			var col3 = rowEle.insertCell(2);
+			col1.innerHTML = (iter + 1);
+			col2.appendChild(inpField1);
+			col3.appendChild(inpField2);
+			rowLen++;
+		}
+
+		var btnElement = document.createElement('button');
+		btnElement.setAttribute("id", "submitbtn");
+		btnElement.type = 'button';
+		btnElement.innerHTML = 'Submit Data';
+		btnElement.setAttribute("onclick", "storeVal();");
+		var btnRow = tableElement.insertRow(rowLen);
+		var btnCol = btnRow.insertCell(0);
+		btnCol.colSpan = "3";
+		btnCol.appendChild(btnElement);
+		rowLen++;
+	}
+
+	function storeVal() {
+		for (var iter = 0; iter < rows; iter++) {
+			var sonNames = [];
+			var fatherName = document.getElementById('father' + (iter + 1)).value;
+			var sonName = document.getElementById('son' + (iter + 1)).value;
+
+			if (valueMap.has(fatherName)) {
+				sonNames = valueMap.get(fatherName);
+			}
+			sonNames.push(sonName);
+			valueMap.set(fatherName, sonNames);
+		}
+
+		document.getElementById("searchData").style.display = "block";
+		console.log(valueMap);
+	}
+	function getGrandChild() {
+		var searchStr = document.getElementById('searchName').value;
+		var child = valueMap.get(searchStr);
+		var grandChild = [];
+		for (var index = 0; index < child.length; index++) {
+			var son = child[index];
+			var tempList = valueMap.get(son);
+
+			if (tempList) {
+				for (var inter = 0; inter < tempList.length; inter++) {
+					grandChild.push(tempList[inter]);
+				}
+			}
+		}
+
+		var message = searchStr + " has ";
+
+		var totalCount = grandChild.length;
+
+		if (totalCount == 0) {
+			message += "no grandson";
+		} else {
+
+			if (totalCount == 1) {
+				message += totalCount + " grandson<br>";
+			} else {
+				message += totalCount + " grandsons<br>";
+			}
+			var resultStr = "They are ";
+
+			for (var iter = 0; iter < totalCount; iter++) {
+				if (iter === totalCount - 1 && totalCount !== 1) {
+					resultStr += " and ";
+				}
+				resultStr += grandChild[iter];
+
+				if (iter != totalCount - 1 && iter < totalCount - 2) {
+					resultStr += ", ";
+				}
+
+			}
+
+			message += resultStr;
+		}
+		document.getElementById("message").innerHTML = message;
+	}
+</script>
+</head>
+<body>
+	<label>Enter no of data to be entered:</label>
+	<input type="number" id="rowValue" name="rowValue">
+	<button onclick="generateRows();">Generate Data Fields</button>
+	<div id="dataDiv" style="display: none">
+		<table id="entryTable">
+			<tr>
+				<td><label>S.No</label></td>
+				<td><label>Father Name</label></td>
+				<td><label>Son Name</label></td>
+			</tr>
+		</table>
+	</div>
+	<div id="searchData" style="display: none;">
+		<label>Enter a name to get their Grand Children</label><br> <input
+			type="text" id="searchName" name="searchName">
+		<button onclick="getGrandChild();">Search GrandChild</button>
+	</div>
+	<div id="message"></div>
+</body>
+</html>

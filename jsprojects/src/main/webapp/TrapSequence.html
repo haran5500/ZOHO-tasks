@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Trap the Sequence</title>
+<script>
+
+	function generateTrap(start, end, checkVal) {
+		var cou = 0, resultVar = "";
+
+		for (start; start <= end; start++) {
+
+			var num = start;
+			while (true) {
+
+				if (num % checkVal == 0 || checkVal % num == 0) {
+					cou++;
+					resultVar += [ start, checkVal ];
+					resultVar += "<br>";
+					checkVal += 2;
+					break;
+				} else {
+					if (num > 9) {
+
+						var sumValue = 0;
+						while (num > 0) {
+							var rem = num % 10;
+							sumValue += rem;
+							num = Math.floor(num / 10);
+						}
+						num = sumValue;
+					} else {
+
+						if (checkVal > 3) {
+							checkVal -= 1;
+						}
+						break;
+					}
+				}
+
+			}
+		}
+		var output = document.getElementById("opdiv");
+		output.innerHTML = "Trapped Times:" + cou;
+		if (cou > 0) {
+			output.innerHTML += "<br>the trapped numbers are:<br>";
+			output.innerHTML += resultVar !== '' ? resultVar : 0;
+		}
+	}
+</script>
+</head>
+<body>
+	<button onclick="generateTrap(49,90,26);">Generate the Trap</button>
+
+	<div id="opdiv"></div>
+</body>
+</html>

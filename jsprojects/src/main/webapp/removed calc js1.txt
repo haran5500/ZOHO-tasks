@@ -1,0 +1,121 @@
+
+//global variables
+
+var operand1 = 0;
+var input = "";
+var enteredOp = '';
+var eleId = '';
+function getInput(val) {
+
+	document.getElementById("textbox").value += val;
+	input += val;
+
+}
+
+function operatorInput(event) {
+	var element = "";
+	if (eleId === '') {
+		eleId = event.id;
+
+	}
+	else if (eleId !== '') {
+		element = document.getElementById(eleId);
+		element.classList.remove("selected");
+		element.classList.add("removeSelected");
+		eleId = event.id;
+	}
+
+	element = document.getElementById(eleId);
+	element.classList.remove("removeSelected");
+	element.classList.add("selected");
+
+	if (enteredOp === '' && element.value !== '-') {
+		enteredOp = element.value;
+		if (operand1 == 0) {
+			operand1 = Number(input);
+		}
+		input = '';
+		document.getElementById("textbox").value = '';
+	}
+
+	else if (enteredOp === '' && element.value === '-') {
+		enteredOp = element.value;
+		if (operand1 == 0) {
+			operand1 = Number(input);
+		}
+		input = '';
+		document.getElementById("textbox").value = '';
+
+	}
+	else if (enteredOp !== '' && element.value !== '-') {
+		enteredOp = element.value;
+		if (operand1 == 0) {
+			operand1 = Number(input);
+		}
+		input = '';
+		document.getElementById("textbox").value = '';
+
+	}
+	else if (element.value === '-') {
+		input += element.value;
+		document.getElementById("textbox").value += element.value;
+
+	}
+}
+
+function clearInput() {
+	document.getElementById(eleId).classList.remove("selected");
+	document.getElementById("textbox").value = '';
+	operand1 = 0;
+	input = '';
+	enteredOp = '';
+}
+
+function calculate() {
+
+	document.getElementById(eleId).classList.remove("selected");
+
+	var result = '';
+	if (operand1 === 0 && enteredOp === '' && input === '') {
+		result = 0;
+	}
+	else if (operand1 !== 0 && enteredOp === '' && input === '') {
+		result = operand1;
+	}
+	else if (operand1 !== 0 && enteredOp !== '' && input === '') {
+		result = operand1;
+	}
+
+	else {
+		input = Number(input);
+
+		switch (enteredOp) {
+			case '+':
+				{
+					result = operand1 + input;
+					break;
+				}
+			case '-':
+				{
+					result = operand1 - input;
+					break;
+				}
+			case '*':
+				{
+					result = operand1 * input;
+					break;
+				}
+			case '/':
+				{
+					result = operand1 / input;
+					break;
+				}
+		}
+		enteredOp = '';
+
+	}
+
+	input = result;
+	operand1 = 0;
+	document.getElementById("textbox").value = result;
+}

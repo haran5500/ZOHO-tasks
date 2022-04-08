@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Binary 1's counter</title>
+<script type="text/javascript">
+	function checkBinary() {
+		var deciNum = document.getElementById('deci').value;
+		var obj = [];
+		var binaryVal = 0, num = parseInt(deciNum), rem = 0, i = 1, count = 0;
+		while (num != 0) {
+			rem = num % 2;
+			if (rem == 1) {
+				count++;
+			}
+			binaryVal += rem * i;
+
+			i *= 10;
+			num = parseInt(num / 2);
+		}
+		var result = "Binary 1's occurences in binary number " + binaryVal
+				+ " is " + count;
+		console.log(result);
+		document.getElementById("resultDiv").innerHTML = result;
+	}
+</script>
+</head>
+<body>
+	<label>Enter a Decimal Number:</label>
+	<input type="number" id="deci" name="decimalNumber">
+	<button onclick="checkBinary();">Click me</button>
+	<div id="resultDiv"></div>
+</body>
+</html>
