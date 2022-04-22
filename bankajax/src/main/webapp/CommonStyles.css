@@ -1,0 +1,471 @@
+@charset "UTF-8";
+
+* {
+	font-family: sans-serif;
+	font-size: 16px;
+	cursor: default;
+
+}
+
+@-o-viewport{
+width: fit-content;
+}
+
+@-o-viewport {
+	width: device-width;
+}
+
+#loginform {
+	/* box-shadow: 2px 2px 5px 5px black; */
+	width: 50%;
+	background-color: whitesmoke;
+	/* 	background-image: linear-gradient(to bottom right, darkblue 50%, mediumorchid 40%); */
+	border-radius: 5px;
+
+}
+
+#menu {
+	/* 	text-align: center; */
+	background-color: darkslategrey;
+	display:block;
+	
+	/*height: 120px;*/
+}
+
+#menu #div1 {
+	color: white;
+	padding-top: 1px;
+	display: block;
+	
+	margin-left: 15px;
+	/* 	text-align: center; */
+}
+
+#menu #div2 {
+/*	margin-top: 10px; */
+	display:block;
+	color: white;
+	/*font-weight: bolder;*/
+	padding-bottom: 6px;
+	padding-top: 6px;
+}
+
+.anchor, .logoutbtn {
+	text-decoration: none;
+	width: auto;
+	height: 25px;
+	padding: 6px;
+	
+	text-align: center;
+	/*font-weight: bold;*/
+	line-height: 25px;
+	/* 	background: darkblue; */
+	border-radius: 25px;
+	color: ghostWhite;
+	height: auto;
+	display: inline-block;
+}
+
+.logoutbtn
+{
+	margin-left:5px;
+}
+.menubutton {
+	/* 	background-color: darkblue; */
+	background: none;
+	border: none;
+	height: 40px;
+	border-radius: 25px;
+	color: ghostWhite;
+	/*font-weight: bold;*/
+}
+
+
+.menubutton:hover, .anchor:hover, .logoutbtn:hover {
+ 	background-color: indigo; 
+	box-shadow: 0px 5px 5px 0px #ffa260;
+}
+
+
+.button1:hover {
+	box-shadow: 0px 5px 5px 0px #ffa260;
+}
+
+.detcenter {
+	text-align: center;
+}
+
+.detright {
+	text-align: right;
+}
+
+#customerdetails, #accdetails, #inactivedetails {
+	position: relative;
+	top: 50px;
+}
+
+#customertable, #accountstable {
+	border-collapse: collapse;
+	width: 100%;
+	background-color: #f2f2f2;
+	border-radius: 15px;
+	}
+
+#customertable tr:first-child td, #accountstable tr:first-child td{
+border: none;
+}
+
+#customertable tr:hover, #accountstable  tr:hover {
+	background-color: #ddd;
+}
+
+#customertable tr td, #accountstable tr td {
+	padding-left: 10px;
+	border: 1px solid  rgb(221, 221, 221);
+}
+
+.hrow
+{
+background-color: rgb(90, 132, 194);
+pointer-events: none;
+}
+
+
+.btntd {
+	height: 75px;
+}
+
+#customertable .btntd td,#accountstable .btntd td{
+border: none;
+}
+
+.button, .button1 {
+	text-decoration: none;
+	width: auto;
+	height: 25px;
+	padding: 10px;
+	text-align: center;
+	/*font-weight: bold;*/
+	line-height: 25px;
+	background: darkblue;
+	/* 	border: none; */
+	/* 	height: 40px; */
+	border-radius: 25px;
+	color: ghostWhite;
+	margin-right: 5px;
+}
+
+.iconbtn
+{
+	text-decoration: none;
+	padding: 10px;
+	float:right;
+		
+	margin-left: 8px;
+	
+}
+
+.iconimg
+{
+	height: 30px;
+	width: 30px;
+}
+
+.button, .showbtn {
+	float: right;
+	display: block;
+}
+
+.button1 {
+	display: inline-block;
+}
+
+.showbtn {
+	width: auto;
+	height: 45px;
+	text-align: center;
+	/*font-weight: bold;*/
+	line-height: 40px;
+	background: darkblue;
+	/* 	border: none; */
+	/* 	height: 40px; */
+	border-radius: 25px;
+	color: ghostWhite;
+	border: none;
+	margin-right: 5px;
+}
+
+.showbtn:hover, .button:hover {
+	box-shadow: 0px 5px 5px 0px lightgreen;
+}
+
+#maindiv {
+	position: relative;
+	left: 5%;
+	width: 90%;
+}
+
+.idanchor {
+	text-decoration: none;
+}
+
+.anchorimg {
+	margin-left: 8px;
+	height: 30px;
+	width: 30px;
+}
+
+.div {
+	margin-top: 2%;
+	margin-left: 25%;
+}
+
+legend img {
+	height: 75px;
+	width: 75px;
+}
+
+legend {
+	text-align: center;
+}
+
+fieldset {
+	border: none;
+
+}
+
+input[type="text"], .dropdn, input[type="password"] {
+	height: 40px;
+	width: 90%;
+	border: none;
+	border-bottom: 2px solid black;
+	outline: none;
+	background: none;
+}
+
+input[type="text"]:focus,input[type="password"]:focus, .dropdn:focus {
+	background: white;
+}
+
+.loginSubmit, .loginReset {
+	background-color: darkblue;
+	color: white;
+	border-radius: 25px;
+}
+
+.loginSubmit {
+	width: 80%;
+	height: 50px;
+	border: none;
+}
+
+.loginSubmit:hover {
+	background-image: linear-gradient(to bottom right, skyblue, purple, purple, black);
+}
+
+.loginReset {
+	width: 125px;
+	height: 35px;
+	margin-left: 35%;
+	border: none;
+}
+
+.loginReset:hover {
+	background-image: linear-gradient(to bottom right, skyblue, skyblue, skyblue, black);
+	color: black;
+}
+
+
+.submitbtn, .resetbtn,.accSubmitbtn,.accResetbtn {
+	height: 50px;
+	border: none;
+	background-color: darkblue;
+	color: white;
+	border-radius: 25px;
+}
+
+.accSubmitbtn
+{
+width:100%;
+}
+
+.submitbtn {
+	width: 40%;
+	margin-left: 10px;
+}
+
+.submitbtn:hover,.accSubmitbtn:hover {
+	background-color: forestgreen;
+	color: black;
+	box-shadow: 0px 5px 5px 0px darkblue;
+}
+
+.resetbtn {
+	width: 20%;
+}
+
+.accResetbtn
+{
+width: 80%;
+}
+
+.resetbtn:hover,.accResetbtn:hover {
+	background-color: tomato;
+	color: black;
+	box-shadow: 0px 5px 5px 0px darkblue;
+}
+
+.required {
+	font-weight: bold;
+}
+
+.required:after {
+	content: " *";
+	color: red;
+}
+
+#transferform {
+	width: 50%;
+	background-color: whitesmoke;
+	border-radius: 5px;
+}
+
+.wdltable {
+	width: 100%;
+	height: 350px;
+}
+
+.wdltable td {
+	text-align: center;
+	height: 50px;
+}
+
+
+#accountform {
+	/* box-shadow: 2px 2px 5px 5px black; */
+	width: 50%;
+	background-color: whitesmoke;
+	/* 	background-image: linear-gradient(to bottom right, darkblue 50%, mediumorchid 40%); */
+	border-radius: 5px;
+}
+
+
+#customerform {
+	/* box-shadow: 2px 2px 5px 5px black; */
+	width: 50%;
+	background-color: whitesmoke;
+	/* 	background-image: linear-gradient(to bottom right, darkblue 50%, mediumorchid 40%); */
+	border-radius: 5px;
+}
+
+.formTable{
+	width: 100%;
+	height: 450px;
+}
+
+.formTable td {
+	height: 50px;
+}
+
+::placeholder {
+	/* color: white; */
+	opacity: 1; /* Firefox */
+}
+
+.success {
+	text-align: center;
+	color: lightgreen;
+}
+
+.error {
+	text-align: center;
+	color: red;
+}
+
+#topdiv {
+	display: inline-block;
+	width: 100%;
+}
+
+#accounts {
+	margin-left: 15%;
+	display: block;
+}
+
+#profile {
+	float: left;
+	display: block;
+	margin-left: 15%;
+}
+
+#customerAccountstable {
+	border-collapse: collapse;
+	width: 80%;
+	height: 75px;
+	background-color: #f2f2f2;
+	border-radius: 15px;
+}
+
+#profiledetails {
+	width: 700px;
+	border: 1px solid f2f2f2;
+	height: 75px;
+	border-collapse: collapse;
+}
+
+#customerAccountstable tr:first-child td 
+{
+border:none;
+}
+
+#customerAccountstable tr td {
+	border-collapse: collapse;
+	height: 80px;
+	padding-left: 10px;
+	border: 1px solid  rgb(221, 221, 221);
+}
+
+#profiledetails tr td {
+	border-collapse: collapse;
+	height: 50px;
+	padding-left: 10px;
+	
+}
+
+#profiledetails tr:nth-child(even) {
+	background-color: #f2f2f2;
+}
+
+#balDisp{
+width:200px;
+height:40px;
+outline:none;
+border:none;
+background: none;	
+}
+
+#profdiv1
+{
+	
+	float:right;
+	
+}
+
+
+#profimg
+{
+	padding-top:2px;
+	padding-right:6px;
+	padding-bottom:6px;
+	padding-left:6px;
+	
+	/*margin-top:5px;*/
+	width:30px;
+	height:30px;
+	float:right;
+}
+
+.errorText
+{
+	color:red;
+}

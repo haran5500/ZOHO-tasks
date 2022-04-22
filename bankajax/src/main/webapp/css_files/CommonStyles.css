@@ -1,0 +1,161 @@
+@charset "UTF-8";
+
+
+body
+{
+background-color: white;
+
+}
+
+
+* {
+	font-family: Helvetica;
+	font-size: 22px;
+	
+}
+
+#menu {
+
+/* 	text-align: center; */
+	background-color: darkslategrey;
+	width: 100%;
+	height: 150px;
+}
+
+#menu #div1 {
+	color: white;
+	margin-top: 10px;
+	display: block;
+	line-height:50px;
+	margin-left: 15px;
+/* 	text-align: center; */
+}
+
+#menu #div2 {
+	margin-top: 10px;
+	display: inline-block;
+	color: white;
+	font-weight: bolder;
+	width: 100%;
+}
+
+.button1:hover {
+	box-shadow: 0px 5px 5px 0px #ffa260;
+}
+
+.detcenter {
+	text-align: center;
+}
+
+.detright {
+	text-align: right;
+}
+
+#customerdetails, #accdetails,#inactivedetails {
+	position: relative;
+	top: 50px;
+}
+
+#customertable, #accountstable {
+	border-collapse: collapse;
+	width: 70%;
+}
+
+#customertable tr:hover, #accountstable  tr:hover {
+	background-color: #ddd;
+}
+
+#customertable tr td, #accountstable tr td {
+	border: 1px solid black;
+}
+
+td {
+	height: 50px;
+}
+
+.button, .button1 {
+	text-decoration: none;
+	width: auto;
+	height: 25px;
+	padding: 10px;
+	text-align: center;
+	font-weight: bold;
+	line-height: 25px;
+	background: darkblue;
+	/* 	border: none; */
+	/* 	height: 40px; */
+	border-radius: 25px;
+	color: ghostWhite;;
+}
+
+.button, .showbtn {
+	float: right;
+	display: block;
+}
+
+.button1 {
+	display: inline-block;
+}
+
+.showbtn {
+	width: auto;
+	height: 45px;
+	text-align: center;
+	font-weight: bold;
+	line-height: 40px;
+	background: darkblue;
+	/* 	border: none; */
+	/* 	height: 40px; */
+	border-radius: 25px;
+	color: ghostWhite;
+	border: none;
+	margin-right: 5px;
+}
+
+.showbtn:hover, .button:hover {
+	box-shadow: 0px 5px 5px 0px lightgreen;
+}
+
+#maindiv {
+	position: relative;
+}
+
+.idanchor {
+	text-decoration: none;
+}
+
+.menubutton {
+	/* 	background-color: darkblue; */
+	background: none;
+	border: none;
+	height: 40px;
+	border-radius: 25px;
+	color: ghostWhite;
+	font-weight: bold;
+}
+
+.anchor, .logoutbtn {
+	text-decoration: none;
+	width: auto;
+	height: 25px;
+	padding: 10px;
+	text-align: center;
+	font-weight: bold;
+	line-height: 25px;
+	/* 	background: darkblue; */
+	border-radius: 25px;
+	color: ghostWhite;
+	height: auto;
+	display: inline-block;
+}
+
+.menubutton:hover, .anchor:hover, .logoutbtn:hover {
+	background-color: indigo;
+	box-shadow: 0px 5px 5px 0px #ffa260;
+	cursor: grab;
+}
+
+.resetbtn
+{
+background-color: blue;
+}

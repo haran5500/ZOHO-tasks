@@ -1,0 +1,50 @@
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<script>
+	$(function() {
+		$("#submitForm").click(function() {
+			if (validateCustomerForm() === true) {
+
+				var set = "";
+
+				if ($("#customerform").attr("name") === "addform") {
+
+					$.ajax({
+						url : "addCustomers",
+						type : "POST",
+						data : {
+
+							customerName : $("#custName").val(),
+							gender : $("#Gender").val(),
+							city : $("#city").val(),
+							mobileNum : $("#mobileNo").val(),
+
+						},
+						dataType : "json",
+						success : function(data) {
+
+							alert(data);
+						},
+						error : function(jqXHR, exception) {
+							alert('none');
+						}
+					});
+
+				} else if ($("#customerform").attr("name") === "updateform") {
+					set = {
+
+						customerId : $("#custId").val(),
+						customerName : $("#custName").val(),
+						gender : $("#Gender").val(),
+						city : $("#city").val(),
+						mobileNum : $("#mobileNo").val(),
+
+					};
+
+				}
+
+			}
+		});
+	});
+</script>
